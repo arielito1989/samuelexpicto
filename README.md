@@ -65,7 +65,7 @@ Aquí está nuestro plan de trabajo. Iremos marcando las tareas a medida que las
 
 *   **Backend:** API REST con Node.js/Express y base de datos PostgreSQL, todo gestionado con Docker.
 *   **Frontend Web:** Aplicación completa en React con modo edición (CRUD), Text-to-Speech y capacidades offline (PWA).
-*   **App de Escritorio:** Configuración de Electron finalizada. Su prueba está actualmente bloqueada por un problema del entorno de desarrollo local, pero el código está listo.
+*   **App de Escritorio:** Configuración de Electron finalizada y funcional. Se ha empaquetado y verificado la aplicación de escritorio con éxito.
 *   **App Móvil:** Proyecto inicializado con React Native y Expo, con la pantalla principal mostrando los pictogramas desde el backend.
 
 **Próximo paso:** Mejorar la UI/UX y añadir funcionalidades adicionales.
@@ -91,3 +91,13 @@ Aquí hay una lista de posibles próximas funcionalidades y mejoras para el proy
 - [ ] **Historial de Frases:** Implementar el "Historial de frases más usadas".
 - [ ] **Arrastrar y Soltar (Drag and Drop):** En la web, permitir que se reordenen los pictogramas en la frase arrastrándolos.
 - [ ] **Sonidos de Interacción:** Añadir sonidos sutiles y opcionales al tocar botones o pictogramas.
+
+---
+
+## 🗒️ Notas de Depuración
+
+### Problema: Aplicación de Escritorio (Electron) se muestra en blanco
+
+*   **Síntoma:** Al generar la aplicación con `npm run dist:electron` y ejecutar el `.exe` resultante, la ventana se abría pero aparecía completamente en blanco.
+*   **Diagnóstico:** Usando las Herramientas de Desarrollo (DevTools) de Electron, se descubrió que el archivo `index.html` se cargaba, pero este no podía encontrar los archivos CSS y JS asociados (error `net::ERR_FILE_NOT_FOUND`). Esto se debe a que Vite genera rutas de assets absolutas (ej: `/assets/index.js`) que no funcionan cuando la aplicación se ejecuta desde el sistema de archivos local (`file://`).
+*   **Solución:** Se modificó el archivo `frontend/vite.config.js` y se añadió la propiedad `base: './'` al objeto de configuración. Esto fuerza a Vite a generar rutas relativas en el `index.html`, lo cual es compatible con Electron y soluciona el problema.
