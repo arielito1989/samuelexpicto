@@ -1,0 +1,17 @@
+# Archivos de dependencias
+node_modules/
+
+# Logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Datos de la base de datos de Docker
+postgres_data/
+
+# Archivos de compilación y distribución
+/frontend/dist
+/frontend/dist_electron
+
+# Archivos de entorno
+.env
