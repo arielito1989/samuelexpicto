@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from '../api';
 import './PhraseGrid.css';
 import PhraseForm from './PhraseForm'; // Importar el nuevo formulario
 
@@ -16,7 +16,7 @@ const PhraseGrid = ({ editMode }) => {
   const fetchPhrases = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://localhost:3000/api/phrases?_=${new Date().getTime()}`);
+      const response = await apiClient.get(`/phrases?_=${new Date().getTime()}`);
       setPhrases(response.data);
     } catch (error) {
       console.error('Error al obtener las frases:', error);
@@ -29,7 +29,7 @@ const PhraseGrid = ({ editMode }) => {
     if (phraseToEdit) {
       // Lógica de actualización
       try {
-        await axios.put(`http://localhost:3000/api/phrases/${phraseToEdit.id}`, phraseData);
+        await apiClient.put(`/phrases/${phraseToEdit.id}`, phraseData);
         setShowForm(false);
         setPhraseToEdit(null);
         fetchPhrases();
@@ -39,7 +39,7 @@ const PhraseGrid = ({ editMode }) => {
     } else {
       // Lógica de creación
       try {
-        await axios.post('http://localhost:3000/api/phrases', phraseData);
+        await apiClient.post('/phrases', phraseData);
         setShowForm(false);
         fetchPhrases();
       } catch (error) {
@@ -56,7 +56,7 @@ const PhraseGrid = ({ editMode }) => {
   const handleDeletePhrase = async (id) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar esta frase?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/phrases/${id}`);
+        await apiClient.delete(`/phrases/${id}`);
         fetchPhrases(); // Recargar las frases
       } catch (error) {
         console.error('Error al eliminar la frase:', error);

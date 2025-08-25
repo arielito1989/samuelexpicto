@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from '../api';
 import './PhraseForm.css';
 
 const PhraseForm = ({ onSave, onCancel, phraseToEdit }) => {
@@ -11,7 +11,7 @@ const PhraseForm = ({ onSave, onCancel, phraseToEdit }) => {
   useEffect(() => {
     const fetchPictograms = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/pictograms');
+        const response = await apiClient.get('/pictograms');
         setPictograms(response.data);
         if (response.data.length > 0 && !phraseToEdit) {
           setImageUrl(response.data[0].imageUrl);

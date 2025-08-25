@@ -5,6 +5,9 @@ import { VitePWA } from 'vite-plugin-pwa'
 // https://vite.dev/config/
 export default defineConfig({
   base: './',
+  define: {
+    'import.meta.env.VITE_API_URL': JSON.stringify('https://pictograma-api.onrender.com')
+  },
   plugins: [
     react(),
     VitePWA({

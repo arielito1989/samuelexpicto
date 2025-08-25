@@ -93,9 +93,9 @@ Esta es la lista de tareas para desplegar la aplicación y hacerla accesible des
 ### Backend (Despliegue en Render)
 - [x] **1.1.** Preparar la configuración de la base de datos para Render (`config.js`).
 - [x] **1.2.** Crear una nueva base de datos PostgreSQL en Render.
-- [ ] **1.3.** Crear un nuevo "Web Service" en Render para el backend.
-- [ ] **1.4.** Configurar las variables de entorno en Render.
-- [ ] **1.5.** Desplegar el código del `backend` a Render.
+- [x] **1.3.** Crear un nuevo "Web Service" en Render para el backend.
+- [x] **1.4.** Configurar las variables de entorno en Render.
+- [x] **1.5.** Desplegar el código del `backend` a Render.
 
 ### Frontend (Despliegue en Vercel)
 - [ ] **2.1.** Actualizar el código del frontend para que se conecte a la URL pública de la API de Render.

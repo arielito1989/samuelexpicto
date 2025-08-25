@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from './api';
 import PictogramGrid from './components/PictogramGrid';
 import SentenceDisplay from './components/SentenceDisplay';
 import PictogramForm from './components/PictogramForm';
@@ -71,7 +71,7 @@ function App() {
   const fetchPictograms = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get('http://localhost:3000/api/pictograms');
+      const response = await apiClient.get('/pictograms');
       setPictograms(response.data);
     } catch (error) {
       console.error('Error al obtener los pictogramas:', error);
@@ -88,7 +88,7 @@ function App() {
 
   const handleAddPictogram = async (pictogramData) => {
     try {
-      await axios.post('http://localhost:3000/api/pictograms', pictogramData);
+      await apiClient.post('/pictograms', pictogramData);
       fetchPictograms();
     } catch (error) {
       console.error('Error al añadir el pictograma:', error);
@@ -98,7 +98,7 @@ function App() {
   const handleUpdatePictogram = async (pictogramData) => {
     if (!pictogramToEdit) return;
     try {
-      await axios.put(`http://localhost:3000/api/pictograms/${pictogramToEdit.id}`, pictogramData);
+      await apiClient.put(`/pictograms/${pictogramToEdit.id}`, pictogramData);
       setPictogramToEdit(null);
       fetchPictograms();
     } catch (error) {
@@ -108,7 +108,7 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/pictograms/${id}`);
+      await apiClient.delete(`/pictograms/${id}`);
       fetchPictograms();
     } catch (error) {
       console.error('Error al eliminar el pictograma:', error);
