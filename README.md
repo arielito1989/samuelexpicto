@@ -79,10 +79,16 @@ Este proyecto utiliza `sequelize.sync({ alter: true })` en el backend. Esto sign
 ## 📋 Funcionalidades Futuras (Pendientes)
 
 -   [ ] **Categorías:** Permitir agrupar los pictogramas por categorías ("Comida", "Animales", "Acciones").
--   [ ] **Historial de Frases:** Implementar el "Historial de frases más usadas".
--   [ ] **Arrastrar y Soltar (Drag and Drop):** En la web, permitir que se reordenen los pictogramas en la frase arrastrándolos.
--   [ ] **Sonidos de Interacción:** Añadir sonidos sutiles y opcionales al tocar botones o pictogramas.
--   [ ] **Desarrollo Móvil:** Continuar el desarrollo de la aplicación móvil con React Native.
+-   [ ] **Búsqueda por Categorías:** Además de la búsqueda por texto, permitir filtrar los pictogramas por las categorías creadas.
+-   [ ] **Historial de Frases:** Implementar un historial de frases creadas para un acceso rápido y repetido.
+-   [ ] **Arrastrar y Soltar (Drag and Drop):** En la web, permitir que se reordenen los pictogramas en la frase arrastrándolos para una edición más intuitiva.
+-   [ ] **Modo Oscuro:** Añadir un tema oscuro para reducir la fatiga visual, especialmente en entornos con poca luz.
+-   [ ] **Personalización de la Voz:** Permitir ajustar la velocidad y el tono de la voz de la síntesis de voz.
+-   [ ] **Exportar/Importar Contenido:** Permitir exportar e importar los pictogramas y frases (por ejemplo, a un archivo JSON) para compartirlos entre dispositivos o como copia de seguridad.
+-   [ ] **Perfiles de Usuario:** Permitir crear múltiples perfiles de usuario, para que varias personas puedan usar la aplicación con sus propias configuraciones, pictogramas y frases guardadas.
+-   [ ] **Estadísticas de Uso:** Mostrar estadísticas sobre los pictogramas y frases más utilizados para ayudar a terapeutas y padres a entender mejor las necesidades y patrones de comunicación del niño.
+-   [ ] **Sonidos de Interacción:** Añadir sonidos sutiles y opcionales al tocar botones o pictogramas para mejorar el feedback auditivo.
+-   [ ] **Desarrollo Móvil:** Continuar el desarrollo de la aplicación móvil con React Native para ofrecer una experiencia nativa en iOS y Android.
 
 ---
 
