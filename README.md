@@ -89,13 +89,13 @@ Aquí hay una lista de posibles próximas funcionalidades y mejoras para el proy
   - [x] Incluir un botón general (icono de basura) para limpiar la frase completa.
 - [x] **Animaciones y Feedback Táctil:** Añadir pequeñas animaciones al pulsar un pictograma (que se agrande un poco, o cambie de color su borde).
 - [x] **Iconos Claros:** Usar una librería de iconos como `react-icons` (para web) y `react-native-vector-icons` (para móvil) para los botones de "editar", "borrar", "hablar", etc.
-- [ ] **Indicadores de Carga Mejorados (Skeletons):** En lugar de un spinner de carga, mostrar "esqueletos" (placeholders con la forma del contenido que va a cargar).
+- [x] **Indicadores de Carga Mejorados (Skeletons):** En lugar de un spinner de carga, mostrar "esqueletos" (placeholders con la forma del contenido que va a cargar).
 - [ ] **Paleta de Colores Personalizable:** Implementar la funcionalidad de "colores personalizables" del plan original.
 
 ### Mejoras Funcionales
 
 - [x] **Selector de Voz TTS:** Añadir opción en el modo edición para que el usuario pueda elegir la voz de la síntesis de voz entre las disponibles en su sistema.
-- [ ] **Buscador de Pictogramas:** En el "Modo Edición", añadir una barra de búsqueda para encontrar pictogramas rápidamente.
+- [x] **Buscador de Pictogramas:** En el "Modo Edición", añadir una barra de búsqueda para encontrar pictogramas rápidamente.
 - [ ] **Categorías:** Permitir agrupar los pictogramas por categorías ("Comida", "Animales", "Acciones").
 - [ ] **Historial de Frases:** Implementar el "Historial de frases más usadas".
 - [ ] **Arrastrar y Soltar (Drag and Drop):** En la web, permitir que se reordenen los pictogramas en la frase arrastrándolos.

@@ -62,3 +62,23 @@
   border: var(--border-width) solid var(--border-color);
   min-width: 250px; /* Ancho mínimo para que se lea bien */
 }
+
+/* Contenedor para la barra de búsqueda */
+.search-container {
+  margin: 20px 0;
+}
+
+.search-input {
+  padding: 12px 15px;
+  width: 50%;
+  max-width: 400px;
+  border-radius: var(--border-radius);
+  border: var(--border-width) solid var(--border-color);
+  font-size: 1rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
