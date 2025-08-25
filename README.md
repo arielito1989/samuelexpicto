@@ -90,16 +90,15 @@ Este proyecto utiliza `sequelize.sync({ alter: true })` en el backend. Esto sign
 
 Esta es la lista de tareas para desplegar la aplicación y hacerla accesible desde internet, logrando un ejecutable final verdaderamente portátil.
 
-### Backend (Despliegue en Heroku)
-- [x] **1.1.** Preparar la configuración de la base de datos para Heroku (`config.js`).
-- [ ] **1.2.** Crear el archivo `Procfile` para decirle a Heroku cómo iniciar el servidor.
-- [ ] **1.3.** Crear una cuenta en Heroku y una nueva "App".
-- [ ] **1.4.** Añadir el complemento (add-on) de PostgreSQL a la app de Heroku.
-- [ ] **1.5.** Configurar las variables de entorno en el panel de Heroku.
-- [ ] **1.6.** Subir y desplegar el código del `backend` a Heroku.
+### Backend (Despliegue en Render)
+- [x] **1.1.** Preparar la configuración de la base de datos para Render (`config.js`).
+- [x] **1.2.** Crear una nueva base de datos PostgreSQL en Render.
+- [ ] **1.3.** Crear un nuevo "Web Service" en Render para el backend.
+- [ ] **1.4.** Configurar las variables de entorno en Render.
+- [ ] **1.5.** Desplegar el código del `backend` a Render.
 
 ### Frontend (Despliegue en Vercel)
-- [ ] **2.1.** Actualizar el código del frontend para que se conecte a la URL pública de la API en Heroku.
+- [ ] **2.1.** Actualizar el código del frontend para que se conecte a la URL pública de la API de Render.
 - [ ] **2.2.** Desplegar el `frontend` en Vercel.
 
 ### Aplicación de Escritorio (Versión Final)
