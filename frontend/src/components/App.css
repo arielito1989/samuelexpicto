@@ -1,0 +1,64 @@
+/* Estilos para el componente principal App */
+
+.app-container {
+  font-family: var(--font-family-sans-serif);
+  text-align: center;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 20px;
+}
+
+.app-header {
+  color: var(--color-dark);
+  margin-bottom: 2rem;
+}
+
+.primary-button {
+  margin: 10px;
+  padding: 12px 24px;
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  background-color: var(--color-primary);
+  color: white; /* Texto blanco para mejor contraste */
+  border: none;
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  box-shadow: var(--box-shadow);
+}
+
+.primary-button:hover {
+  background-color: #0069d9; /* Azul más oscuro en hover */
+  transform: translateY(-2px);
+}
+
+.primary-button:active {
+    transform: translateY(0);
+}
+
+.primary-button:disabled {
+  background-color: var(--color-secondary);
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* Contenedor para el selector de voz */
+.voice-selector-container {
+  margin-top: 20px;
+  padding: 15px;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--surface-color);
+  display: inline-block; /* Para que no ocupe todo el ancho */
+}
+
+.voice-selector-container label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.voice-selector-container select {
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  border: var(--border-width) solid var(--border-color);
+  min-width: 250px; /* Ancho mínimo para que se lea bien */
+}

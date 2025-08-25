@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa'; // Importar iconos
 import './PictogramGrid.css';
 
 const PictogramGrid = ({ pictograms, onPictogramSelect, editMode, onEdit, onDelete }) => {
@@ -10,17 +11,17 @@ const PictogramGrid = ({ pictograms, onPictogramSelect, editMode, onEdit, onDele
           <p>{pictogram.name}</p>
           {editMode && (
             <div className="edit-buttons">
-              <button className="edit-button" onClick={(e) => {
+              <button className="icon-button edit-button" onClick={(e) => {
                 e.stopPropagation();
                 onEdit(pictogram);
               }}>
-                Editar
+                <FaPencilAlt />
               </button>
-              <button className="delete-button" onClick={(e) => {
+              <button className="icon-button delete-button" onClick={(e) => {
                 e.stopPropagation(); // Prevent card click event
                 onDelete(pictogram.id);
               }}>
-                Eliminar
+                <FaTrash />
               </button>
             </div>
           )}

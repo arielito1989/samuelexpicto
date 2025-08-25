@@ -59,7 +59,7 @@ Aquí está nuestro plan de trabajo. Iremos marcando las tareas a medida que las
 
 ---
 
-## 📌 Estado Actual (24/08/2025)
+## 📌 Estado Actual (25/08/2025)
 
 ¡Se ha completado toda la configuración y el desarrollo inicial del proyecto multiplataforma!
 
@@ -68,7 +68,10 @@ Aquí está nuestro plan de trabajo. Iremos marcando las tareas a medida que las
 *   **App de Escritorio:** Configuración de Electron finalizada y funcional. Se ha empaquetado y verificado la aplicación de escritorio con éxito.
 *   **App Móvil:** Proyecto inicializado con React Native y Expo, con la pantalla principal mostrando los pictogramas desde el backend.
 
-**Próximo paso:** Mejorar la UI/UX y añadir funcionalidades adicionales.
+**Próximo paso:** Implementar un set de mejoras de UI/UX y funcionalidades clave. Foco actual en:
+1.  Uso de iconos para acciones.
+2.  Buscador de pictogramas.
+3.  Animaciones y feedback visual.
 
 ---
 
@@ -78,14 +81,20 @@ Aquí hay una lista de posibles próximas funcionalidades y mejoras para el proy
 
 ### Mejoras Visuales y de Usabilidad (UI/UX)
 
-- [ ] **Tema y Estilo Consistente:** Crear un archivo de tema (`theme.js` o similar) con colores, fuentes y tamaños definidos para usar tanto en la web como en el móvil.
-- [ ] **Animaciones y Feedback Táctil:** Añadir pequeñas animaciones al pulsar un pictograma (que se agrande un poco, o cambie de color su borde).
-- [ ] **Iconos Claros:** Usar una librería de iconos como `react-icons` (para web) y `react-native-vector-icons` (para móvil) para los botones de "editar", "borrar", "hablar", etc.
+- [x] **Tema y Estilo Consistente:** Crear un archivo de tema (`theme.js` o similar) con colores, fuentes y tamaños definidos para usar tanto en la web como en el móvil.
+  - *Nota: Se ha creado un `theme.css` global con variables de CSS. Se refactorizaron los componentes para usar clases en lugar de estilos en línea, solucionando problemas de especificidad y centralizando el diseño.*
+- [x] **Rediseño de la Barra de Frase (Chips Editables):** Mejorar la construcción de frases.
+  - [x] Convertir cada palabra de la frase en un "chip" o "etiqueta" individual.
+  - [x] Añadir un botón 'x' a cada chip para permitir el borrado individual de palabras.
+  - [x] Incluir un botón general (icono de basura) para limpiar la frase completa.
+- [x] **Animaciones y Feedback Táctil:** Añadir pequeñas animaciones al pulsar un pictograma (que se agrande un poco, o cambie de color su borde).
+- [x] **Iconos Claros:** Usar una librería de iconos como `react-icons` (para web) y `react-native-vector-icons` (para móvil) para los botones de "editar", "borrar", "hablar", etc.
 - [ ] **Indicadores de Carga Mejorados (Skeletons):** En lugar de un spinner de carga, mostrar "esqueletos" (placeholders con la forma del contenido que va a cargar).
 - [ ] **Paleta de Colores Personalizable:** Implementar la funcionalidad de "colores personalizables" del plan original.
 
 ### Mejoras Funcionales
 
+- [x] **Selector de Voz TTS:** Añadir opción en el modo edición para que el usuario pueda elegir la voz de la síntesis de voz entre las disponibles en su sistema.
 - [ ] **Buscador de Pictogramas:** En el "Modo Edición", añadir una barra de búsqueda para encontrar pictogramas rápidamente.
 - [ ] **Categorías:** Permitir agrupar los pictogramas por categorías ("Comida", "Animales", "Acciones").
 - [ ] **Historial de Frases:** Implementar el "Historial de frases más usadas".

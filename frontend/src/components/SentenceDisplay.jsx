@@ -1,20 +1,36 @@
 import React from 'react';
+import { FaTimes, FaTrash } from 'react-icons/fa'; // Iconos para borrar
+import './SentenceDisplay.css';
 
-const SentenceDisplay = ({ sentence }) => {
-  const displayStyle = {
-    padding: '20px',
-    margin: '20px',
-    border: '2px solid #007bff',
-    borderRadius: '8px',
-    minHeight: '50px',
-    textAlign: 'left',
-    fontSize: '1.2em',
-    backgroundColor: '#f8f9fa',
+const SentenceDisplay = ({ sentence, setSentence }) => {
+
+  const handleRemoveWord = (indexToRemove) => {
+    setSentence(prevSentence => prevSentence.filter((_, index) => index !== indexToRemove));
+  };
+
+  const handleClearSentence = () => {
+    setSentence([]);
   };
 
   return (
-    <div style={displayStyle}>
-      {sentence.length > 0 ? sentence.join(' ') : 'Selecciona pictogramas para formar una frase...'}
+    <div className="sentence-display-container">
+      {sentence.length > 0 ? (
+        <>
+          {sentence.map((word, index) => (
+            <div key={index} className="sentence-chip">
+              <span>{word}</span>
+              <button className="remove-chip-button" onClick={() => handleRemoveWord(index)}>
+                <FaTimes />
+              </button>
+            </div>
+          ))}
+          <button className="clear-sentence-button" onClick={handleClearSentence}>
+            <FaTrash />
+          </button>
+        </>
+      ) : (
+        <span className="placeholder-text">Selecciona pictogramas para formar una frase...</span>
+      )}
     </div>
   );
 };

@@ -6,16 +6,28 @@
 }
 
 .pictogram-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  position: relative; /* Necesario para el feedback táctil */
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
   padding: 10px;
   text-align: center;
   cursor: pointer;
-  transition: transform 0.2s;
+  background-color: var(--surface-color);
+  box-shadow: var(--box-shadow);
+  /* Transición para todos los efectos */
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
 .pictogram-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px); /* Efecto de elevarse */
+  border-color: var(--color-primary);
+  box-shadow: var(--box-shadow-lg); /* Sombra más pronunciada */
+}
+
+/* Feedback táctil al hacer clic */
+.pictogram-card:active {
+  transform: translateY(-2px) scale(0.98); /* Se presiona y encoge un poco */
+  box-shadow: var(--box-shadow);
 }
 
 .pictogram-card img {
@@ -28,4 +40,27 @@
   margin-top: 10px;
   display: flex;
   justify-content: space-around;
+}
+
+/* Estilos para los nuevos botones con iconos */
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem; /* Tamaño del icono */
+  padding: 5px;
+  color: var(--color-secondary);
+  transition: color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.icon-button:hover {
+  transform: scale(1.2);
+}
+
+.edit-button:hover {
+  color: var(--color-primary);
+}
+
+.delete-button:hover {
+  color: var(--color-danger);
 }

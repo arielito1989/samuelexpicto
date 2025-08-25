@@ -1,0 +1,38 @@
+/* 
+ * Archivo de Tema Central
+ * ----------------------
+ * Define la paleta de colores y estilos globales de la aplicación 
+ * para mantener una consistencia visual en todos los componentes.
+ */
+
+:root {
+  /* Paleta de Colores */
+  --color-primary: #007bff;       /* Azul principal para botones y elementos interactivos */
+  --color-secondary: #6c757d;     /* Gris secundario para texto y elementos menos importantes */
+  --color-accent: #ffc107;        /* Amarillo para destacar o notificaciones */
+  --color-success: #28a745;       /* Verde para acciones de éxito */
+  --color-danger: #dc3545;        /* Rojo para acciones de peligro o borrado */
+  --color-light: #f8f9fa;         /* Gris muy claro para fondos */
+  --color-dark: #343a40;          /* Negro/Gris oscuro para texto principal */
+  
+  --background-color: #ffffff;    /* Color de fondo principal */
+  --surface-color: #f8f9fa;       /* Color para superficies como tarjetas o contenedores */
+  --text-color: var(--color-dark);
+  --border-color: #dee2e6;
+
+  /* Tipografía */
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  
+  --font-size-base: 1rem;       /* 16px por defecto */
+  --font-size-lg: 1.25rem;
+  --font-size-sm: 0.875rem;
+
+  /* Bordes */
+  --border-radius: 0.5rem;
+  --border-width: 1px;
+
+  /* Sombras */
+  --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --box-shadow-lg: 0 1rem 3rem rgba(0,0,0,.175);
+}
