@@ -1,0 +1,72 @@
+.phrase-form {
+  margin-top: 20px;
+  padding: 20px;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: var(--surface-color);
+  box-shadow: var(--box-shadow);
+}
+
+.phrase-form h3 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+  border: var(--border-width) solid var(--border-color);
+}
+
+.pictogram-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  border-radius: var(--border-radius);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.pictogram-option {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.pictogram-option.selected {
+  border-color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+.form-actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.secondary-button {
+    margin-left: 10px;
+    background-color: var(--color-secondary);
+}

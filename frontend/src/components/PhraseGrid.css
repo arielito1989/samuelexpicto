@@ -1,0 +1,42 @@
+.phrase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.phrase-card {
+  position: relative;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--surface-color);
+  box-shadow: var(--box-shadow);
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.phrase-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-primary);
+  box-shadow: var(--box-shadow-lg);
+}
+
+.phrase-card:active {
+  transform: translateY(-2px) scale(0.98);
+  box-shadow: var(--box-shadow);
+}
+
+.phrase-card img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  aspect-ratio: 1 / 1; /* Asegurar que la imagen sea cuadrada */
+  object-fit: cover; /* Escalar la imagen para que cubra el espacio */
+}
+
+.phrase-card p {
+  margin: 0;
+  font-weight: bold;
+}

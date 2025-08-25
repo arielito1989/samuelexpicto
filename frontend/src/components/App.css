@@ -82,3 +82,60 @@
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
+
+/* Contenedor para el editor de temas */
+.theme-editor-container {
+  margin-top: 20px;
+  padding: 15px;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--surface-color);
+}
+
+/* Estilos para las pestañas */
+.tabs-container {
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-color);
+  margin: 0 5px;
+  border-radius: 5px 5px 0 0;
+  border-bottom: none;
+}
+
+.tab-button.active {
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--background-color);
+  font-weight: bold;
+}
+
+
+.theme-editor-container h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.color-picker-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.color-picker-group label {
+  font-weight: bold;
+}
+
+.color-picker-group input[type="color"] {
+  width: 50px;
+  height: 30px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background-color: transparent;
+}

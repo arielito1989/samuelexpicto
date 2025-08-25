@@ -3,10 +3,20 @@ import axios from 'axios';
 import PictogramGrid from './components/PictogramGrid';
 import SentenceDisplay from './components/SentenceDisplay';
 import PictogramForm from './components/PictogramForm';
+import PhraseGrid from './components/PhraseGrid';
 import './components/App.css';
+
+// Objeto con los colores por defecto de la aplicación
+const defaultTheme = {
+  primary: '#007bff',
+  surface: '#f8f9fa',
+  background: '#ffffff',
+  text: '#343a40'
+};
 
 function App() {
   const [sentence, setSentence] = useState([]);
+  const [activeTab, setActiveTab] = useState('create');
   const [editMode, setEditMode] = useState(false);
   const [pictograms, setPictograms] = useState([]);
   const [pictogramToEdit, setPictogramToEdit] = useState(null);
@@ -14,6 +24,24 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [availableVoices, setAvailableVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(() => localStorage.getItem('selectedVoiceName') || '');
+
+  // Estado para el tema de colores, inicializado desde localStorage o con los valores por defecto
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('userTheme');
+    return savedTheme ? JSON.parse(savedTheme) : defaultTheme;
+  });
+
+  // Efecto para aplicar el tema de colores a las variables CSS y guardarlo
+  useEffect(() => {
+    // Aplicar los colores del estado del tema a las variables CSS en el elemento raíz
+    document.documentElement.style.setProperty('--color-primary', theme.primary);
+    document.documentElement.style.setProperty('--surface-color', theme.surface);
+    document.documentElement.style.setProperty('--background-color', theme.background);
+    document.documentElement.style.setProperty('--text-color', theme.text);
+    
+    // Guardar el tema actual en localStorage
+    localStorage.setItem('userTheme', JSON.stringify(theme));
+  }, [theme]);
 
   useEffect(() => {
     if (selectedVoice) {
@@ -129,10 +157,24 @@ function App() {
       <button className="primary-button" onClick={() => { setEditMode(!editMode); setPictogramToEdit(null); }}>
         {editMode ? 'Salir del Modo Edición' : 'Entrar al Modo Edición'}
       </button>
-      <SentenceDisplay sentence={sentence} setSentence={setSentence} />
-      <button className="primary-button" onClick={speakSentence} disabled={sentence.length === 0}>
-        Leer Frase
-      </button>
+      <div className="tabs-container">
+        <button onClick={() => setActiveTab('create')} className={`tab-button ${activeTab === 'create' ? 'active' : ''}`}>
+          Crear Frase
+        </button>
+        <button onClick={() => setActiveTab('quick')} className={`tab-button ${activeTab === 'quick' ? 'active' : ''}`}>
+          Frases Rápidas
+        </button>
+      </div>
+
+      {activeTab === 'create' && (
+        <>
+          <SentenceDisplay sentence={sentence} setSentence={setSentence} />
+          <button className="primary-button" onClick={speakSentence} disabled={sentence.length === 0}>
+            Leer Frase
+          </button>
+        </>
+      )}
+
       {editMode && (
         <>
           <div className="search-container">
@@ -159,16 +201,54 @@ function App() {
               ))}
             </select>
           </div>
+
+          <div className="theme-editor-container">
+            <h4>Personalizar Colores</h4>
+            <div className="color-picker-group">
+              <label>Primario:</label>
+              <input type="color" value={theme.primary} onChange={e => setTheme({...theme, primary: e.target.value})} />
+            </div>
+            <div className="color-picker-group">
+              <label>Superficie:</label>
+              <input type="color" value={theme.surface} onChange={e => setTheme({...theme, surface: e.target.value})} />
+            </div>
+            <div className="color-picker-group">
+              <label>Fondo:</label>
+              <input type="color" value={theme.background} onChange={e => setTheme({...theme, background: e.target.value})} />
+            </div>
+            <div className="color-picker-group">
+              <label>Texto:</label>
+              <input type="color" value={theme.text} onChange={e => setTheme({...theme, text: e.target.value})} />
+            </div>
+          </div>
         </>
       )}
-      <PictogramGrid
-        pictograms={filteredPictograms}
-        onPictogramSelect={handlePictogramSelect}
-        editMode={editMode}
-        onEdit={handleEditSelect}
-        onDelete={handleDelete}
-        isLoading={isLoading}
-      />
+
+      {activeTab === 'create' && !editMode && (
+        <PictogramGrid
+          pictograms={filteredPictograms}
+          onPictogramSelect={handlePictogramSelect}
+          editMode={editMode}
+          onEdit={handleEditSelect}
+          onDelete={handleDelete}
+          isLoading={isLoading}
+        />
+      )}
+
+      {activeTab === 'quick' && (
+        <PhraseGrid editMode={editMode} />
+      )}
+
+      {editMode && (
+         <PictogramGrid
+          pictograms={filteredPictograms}
+          onPictogramSelect={handlePictogramSelect}
+          editMode={editMode}
+          onEdit={handleEditSelect}
+          onDelete={handleDelete}
+          isLoading={isLoading}
+        />
+      )}
     </div>
   );
 }
