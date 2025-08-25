@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middlewares
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://pictograma-app.vercel.app'],
+  origin: ['http://localhost:5173', 'https://samuelexpicto.vercel.app'],
   optionsSuccessStatus: 200
 };
 

@@ -98,8 +98,10 @@ Esta es la lista de tareas para desplegar la aplicación y hacerla accesible des
 - [x] **1.5.** Desplegar el código del `backend` a Render.
 
 ### Frontend (Despliegue en Vercel)
-- [ ] **2.1.** Actualizar el código del frontend para que se conecte a la URL pública de la API de Render.
-- [ ] **2.2.** Desplegar el `frontend` en Vercel.
+- [x] **2.1.** Actualizar el código del frontend para que se conecte a la URL pública de la API de Render.
+- [x] **2.2.** Desplegar el `frontend` en Vercel.
+
+La aplicación está disponible en: [https://samuelexpicto.vercel.app](https://samuelexpicto.vercel.app)
 
 ### Aplicación de Escritorio (Versión Final)
 - [ ] **3.1.** Generar el ejecutable final de Electron que se conecta a la API en la nube.
