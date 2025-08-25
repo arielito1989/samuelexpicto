@@ -1,8 +1,9 @@
 const path = require('path');
 
+// Todas las rutas deben ser relativas al directorio 'backend'
 module.exports = {
-  'config': path.resolve('config', 'config.js'),
-  'models-path': path.resolve('models'),
-  'seeders-path': path.resolve('seeders'),
-  'migrations-path': path.resolve('migrations'),
+  'config': path.resolve('backend', 'config', 'config.js'),
+  'models-path': path.resolve('backend', 'models'),
+  'seeders-path': path.resolve('backend', 'seeders'),
+  'migrations-path': path.resolve('backend', 'migrations'),
 };

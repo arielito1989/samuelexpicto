@@ -1,112 +1,106 @@
-# Comunicador Pictográfico para Niños con Autismo
+# Comunicador Pictográfico
 
-Este proyecto es una aplicación de comunicación asistida por pictogramas, diseñada para ayudar a niños con autismo u otras dificultades de comunicación a expresar sus necesidades y deseos de forma sencilla e intuitiva.
+Este proyecto es una aplicación de comunicación asistida por pictogramas, diseñada para ayudar a niños con autismo u otras dificultades de comunicación a expresar sus necesidades y deseos de forma sencilla e intuitiva. La aplicación es multiplataforma y funciona en la web, como aplicación de escritorio (Windows, macOS, Linux) y tiene una base para desarrollo móvil.
 
-## Stack Tecnológico
+## ✨ Características Principales
 
-*   **Frontend (Web):** React
-*   **Frontend (Móvil):** React Native
-*   **Backend:** Node.js con Express
-*   **Base de Datos:** PostgreSQL
-*   **Contenerización:** Docker
-*   **Empaquetado:** Electron (Escritorio), Capacitor/Expo (Móvil)
+- **Constructor de Frases:** Permite a los usuarios seleccionar una secuencia de pictogramas para construir una frase.
+- **Síntesis de Voz (TTS):** Reproduce las frases construidas en voz alta, con opción a seleccionar diferentes voces en español.
+- **Frases Rápidas:** Un modo alternativo que permite guardar y reproducir frases completas de uso frecuente con un solo clic.
+- **Modo Edición:** Una sección protegida para que familiares o tutores puedan gestionar el contenido:
+  - **CRUD de Pictogramas:** Añadir, editar o eliminar pictogramas.
+  - **CRUD de Frases Rápidas:** Añadir, editar o eliminar frases de uso frecuente.
+  - **Buscador:** Encontrar pictogramas rápidamente por su nombre.
+- **Personalización Visual:** Permite cambiar los colores principales de la interfaz (primario, fondo, superficie y texto) para adaptarse a las preferencias sensoriales del usuario. La selección se guarda localmente.
+- **Multiplataforma:**
+  - **Web:** Aplicación web progresiva (PWA) completamente funcional.
+  - **Escritorio:** Empaquetada con Electron para una experiencia nativa en sistemas operativos de escritorio.
+  - **Móvil:** Estructura de proyecto inicializada con React Native y Expo.
 
-## Funcionalidades
+## 🛠️ Stack Tecnológico
 
-### Clave
-*   Tablero de pictogramas inicial con acciones básicas (comer, beber, baño, plaza, dormir, jugar).
-*   Construcción de frases mediante la selección de pictogramas.
-*   Reproducción de frases completas mediante Text-to-Speech (TTS).
-*   Modo edición para familiares: agregar nuevas acciones, imágenes o fotos reales.
-*   Modo offline: la aplicación debe poder funcionar sin conexión a internet.
+- **Backend:** Node.js con Express y Sequelize (para el ORM con PostgreSQL).
+- **Frontend (Web y Escritorio):** React con Vite.
+- **Base de Datos:** PostgreSQL.
+- **Contenerización:** Docker y Docker Compose.
+- **Empaquetado de Escritorio:** Electron.
 
-### Adicionales (Opcionales)
-*   Historial de frases más usadas.
-*   Colores personalizables para preferencias sensoriales.
-*   Botón SOS para enviar notificación a un familiar.
-*   Multiusuario para distintos niños o necesidades.
+## 🚀 Instalación y Ejecución
 
-## ✅ Plan de Desarrollo
+Sigue estos pasos para levantar el entorno de desarrollo completo.
 
-Aquí está nuestro plan de trabajo. Iremos marcando las tareas a medida que las completemos.
+### Prerrequisitos
 
-### Fase 1: Configuración y Backend
+- [Docker](https://www.docker.com/products/docker-desktop/) y Docker Compose.
+- [Node.js](https://nodejs.org/) (versión 18 o superior).
+- `npm` (generalmente se instala con Node.js).
 
-- [x] **1.1.** Crear estructura de directorios del proyecto (`backend`, `frontend`, `mobile`, etc.).
-- [x] **1.2.** Inicializar el proyecto de Node.js en la carpeta `backend`.
-- [x] **1.3.** Configurar el servidor básico con Express.
-- [x] **1.4.** Definir los modelos/esquemas para la base de datos (ej: Pictogramas, Usuarios).
-- [x] **1.5.** Crear los endpoints básicos del API REST para los pictogramas (CRUD).
-- [x] **1.6.** Configurar Docker y `docker-compose.yml` para levantar el backend y la base de datos PostgreSQL.
+### Pasos
 
-### Fase 2: Frontend (Web)
+1.  **Clonar el Repositorio (si aplica)**
+    ```bash
+    git clone <url-del-repositorio>
+    cd <nombre-del-repositorio>
+    ```
 
-- [x] **2.1.** Inicializar el proyecto de React en la carpeta `frontend`.
-- [x] **2.2.** Diseñar y crear el componente del tablero de pictogramas.
-- [x] **2.3.** Implementar la lógica para seleccionar pictogramas y construir una frase.
-- [x] **2.4.** Conectar el frontend con el API del backend para obtener los pictogramas.
-- [x] **2.5.** Integrar una librería de Text-to-Speech (TTS) para leer las frases.
+2.  **Levantar los Servicios de Backend y Base de Datos**
 
-### Fase 3: Funcionalidades Avanzadas
+    Desde la raíz del proyecto, ejecuta el siguiente comando. Esto creará y levantará los contenedores para la API (backend) y la base de datos PostgreSQL.
 
-- [x] **3.1.** Desarrollar el "Modo Edición" para que los familiares puedan agregar/editar/eliminar pictogramas. (CRUD completo).
-- [x] **3.2.** Implementar la funcionalidad offline (Service Workers en web).
+    ```bash
+    docker-compose up -d
+    ```
 
-### Fase 4: Empaquetado y Despliegue
+3.  **Instalar Dependencias y Ejecutar el Frontend**
 
-- [x] **4.1.** Configurar Electron para empaquetar la aplicación web para escritorio.
-- [x] **4.2.** Inicializar y configurar el proyecto de React Native para la versión móvil.
+    Desde la raíz del proyecto, ejecuta los siguientes comandos. El primero instalará las dependencias del frontend y el segundo iniciará el servidor de desarrollo de Vite.
 
----
+    ```bash
+    npm install --prefix frontend
+    npm run dev --prefix frontend
+    ```
 
-## 📌 Estado Actual (25/08/2025)
+4.  **¡Listo!**
 
-¡Se ha completado toda la configuración y el desarrollo inicial del proyecto multiplataforma!
+    Abre tu navegador y visita [http://localhost:5173](http://localhost:5173) para ver la aplicación en funcionamiento.
 
-*   **Backend:** API REST con Node.js/Express y base de datos PostgreSQL, todo gestionado con Docker.
-*   **Frontend Web:** Aplicación completa en React con modo edición (CRUD), Text-to-Speech y capacidades offline (PWA).
-*   **App de Escritorio:** Configuración de Electron finalizada y funcional. Se ha empaquetado y verificado la aplicación de escritorio con éxito.
-*   **App Móvil:** Proyecto inicializado con React Native y Expo, con la pantalla principal mostrando los pictogramas desde el backend.
+### Scripts Útiles
 
-**Próximo paso:** Implementar un set de mejoras de UI/UX y funcionalidades clave. Foco actual en:
-1.  Uso de iconos para acciones.
-2.  Buscador de pictogramas.
-3.  Animaciones y feedback visual.
+-   `frontend/npm run dev`: Inicia el servidor de desarrollo web.
+-   `frontend/npm run build`: Compila el proyecto de React para producción.
+-   `frontend/npm run dist:electron`: Empaqueta la aplicación en un ejecutable de escritorio.
+-   `docker-compose logs -f api`: Muestra los logs en tiempo real del contenedor del backend.
+-   `docker-compose down`: Detiene y elimina los contenedores.
 
----
+## 📝 Nota sobre la Base de Datos
 
-## 🚀 Mejoras Futuras y Sugerencias
+Este proyecto utiliza `sequelize.sync({ alter: true })` en el backend. Esto significa que cada vez que el servidor de la API se inicia, Sequelize intentará alterar las tablas existentes en la base de datos para que coincidan con la definición de los modelos. Es un método muy conveniente para el desarrollo, pero no se recomienda para un entorno de producción.
 
-Aquí hay una lista de posibles próximas funcionalidades y mejoras para el proyecto.
+## 📋 Funcionalidades Futuras (Pendientes)
 
-### Mejoras Visuales y de Usabilidad (UI/UX)
-
-- [x] **Tema y Estilo Consistente:** Crear un archivo de tema (`theme.js` o similar) con colores, fuentes y tamaños definidos para usar tanto en la web como en el móvil.
-  - *Nota: Se ha creado un `theme.css` global con variables de CSS. Se refactorizaron los componentes para usar clases en lugar de estilos en línea, solucionando problemas de especificidad y centralizando el diseño.*
-- [x] **Rediseño de la Barra de Frase (Chips Editables):** Mejorar la construcción de frases.
-  - [x] Convertir cada palabra de la frase en un "chip" o "etiqueta" individual.
-  - [x] Añadir un botón 'x' a cada chip para permitir el borrado individual de palabras.
-  - [x] Incluir un botón general (icono de basura) para limpiar la frase completa.
-- [x] **Animaciones y Feedback Táctil:** Añadir pequeñas animaciones al pulsar un pictograma (que se agrande un poco, o cambie de color su borde).
-- [x] **Iconos Claros:** Usar una librería de iconos como `react-icons` (para web) y `react-native-vector-icons` (para móvil) para los botones de "editar", "borrar", "hablar", etc.
-- [x] **Indicadores de Carga Mejorados (Skeletons):** En lugar de un spinner de carga, mostrar "esqueletos" (placeholders con la forma del contenido que va a cargar).
-- [ ] **Paleta de Colores Personalizable:** Implementar la funcionalidad de "colores personalizables" del plan original.
-
-### Mejoras Funcionales
-
-- [x] **Selector de Voz TTS:** Añadir opción en el modo edición para que el usuario pueda elegir la voz de la síntesis de voz entre las disponibles en su sistema.
-- [x] **Buscador de Pictogramas:** En el "Modo Edición", añadir una barra de búsqueda para encontrar pictogramas rápidamente.
-- [ ] **Categorías:** Permitir agrupar los pictogramas por categorías ("Comida", "Animales", "Acciones").
-- [ ] **Historial de Frases:** Implementar el "Historial de frases más usadas".
-- [ ] **Arrastrar y Soltar (Drag and Drop):** En la web, permitir que se reordenen los pictogramas en la frase arrastrándolos.
-- [ ] **Sonidos de Interacción:** Añadir sonidos sutiles y opcionales al tocar botones o pictogramas.
+-   [ ] **Categorías:** Permitir agrupar los pictogramas por categorías ("Comida", "Animales", "Acciones").
+-   [ ] **Historial de Frases:** Implementar el "Historial de frases más usadas".
+-   [ ] **Arrastrar y Soltar (Drag and Drop):** En la web, permitir que se reordenen los pictogramas en la frase arrastrándolos.
+-   [ ] **Sonidos de Interacción:** Añadir sonidos sutiles y opcionales al tocar botones o pictogramas.
+-   [ ] **Desarrollo Móvil:** Continuar el desarrollo de la aplicación móvil con React Native.
 
 ---
 
-## 🗒️ Notas de Depuración
+## 🚀 Plan de Despliegue a Producción
 
-### Problema: Aplicación de Escritorio (Electron) se muestra en blanco
+Esta es la lista de tareas para desplegar la aplicación y hacerla accesible desde internet, logrando un ejecutable final verdaderamente portátil.
 
-*   **Síntoma:** Al generar la aplicación con `npm run dist:electron` y ejecutar el `.exe` resultante, la ventana se abría pero aparecía completamente en blanco.
-*   **Diagnóstico:** Usando las Herramientas de Desarrollo (DevTools) de Electron, se descubrió que el archivo `index.html` se cargaba, pero este no podía encontrar los archivos CSS y JS asociados (error `net::ERR_FILE_NOT_FOUND`). Esto se debe a que Vite genera rutas de assets absolutas (ej: `/assets/index.js`) que no funcionan cuando la aplicación se ejecuta desde el sistema de archivos local (`file://`).
-*   **Solución:** Se modificó el archivo `frontend/vite.config.js` y se añadió la propiedad `base: './'` al objeto de configuración. Esto fuerza a Vite a generar rutas relativas en el `index.html`, lo cual es compatible con Electron y soluciona el problema.
+### Backend (Despliegue en Heroku)
+- [x] **1.1.** Preparar la configuración de la base de datos para Heroku (`config.js`).
+- [ ] **1.2.** Crear el archivo `Procfile` para decirle a Heroku cómo iniciar el servidor.
+- [ ] **1.3.** Crear una cuenta en Heroku y una nueva "App".
+- [ ] **1.4.** Añadir el complemento (add-on) de PostgreSQL a la app de Heroku.
+- [ ] **1.5.** Configurar las variables de entorno en el panel de Heroku.
+- [ ] **1.6.** Subir y desplegar el código del `backend` a Heroku.
+
+### Frontend (Despliegue en Vercel)
+- [ ] **2.1.** Actualizar el código del frontend para que se conecte a la URL pública de la API en Heroku.
+- [ ] **2.2.** Desplegar el `frontend` en Vercel.
+
+### Aplicación de Escritorio (Versión Final)
+- [ ] **3.1.** Generar el ejecutable final de Electron que se conecta a la API en la nube.
