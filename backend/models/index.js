@@ -40,7 +40,6 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-// Sincronizar la base de datos para crear tablas si no existen
-sequelize.sync({ alter: true });
+
 
 module.exports = db;
