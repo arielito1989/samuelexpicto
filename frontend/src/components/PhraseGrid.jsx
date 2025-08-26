@@ -66,8 +66,12 @@ const PhraseGrid = ({ editMode }) => {
 
   const speakPhrase = (phrase) => {
     if (editMode) return; // No hablar en modo edición
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(phrase);
+
+    if (phrase.audioUrl) {
+      const audio = new Audio(phrase.audioUrl);
+      audio.play();
+    } else if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(phrase.fullSentence);
       utterance.lang = 'es-ES';
       window.speechSynthesis.speak(utterance);
     } else {
@@ -96,7 +100,7 @@ const PhraseGrid = ({ editMode }) => {
           <p>Cargando frases...</p>
         ) : (
           phrases.map(phrase => (
-            <div key={phrase.id} className="phrase-card" onClick={() => speakPhrase(phrase.fullSentence)}>
+            <div key={phrase.id} className="phrase-card" onClick={() => speakPhrase(phrase)}>
               <img src={phrase.imageUrl} alt={phrase.title} />
               <p>{phrase.title}</p>
               {editMode && (

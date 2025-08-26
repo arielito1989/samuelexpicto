@@ -92,6 +92,7 @@ El proyecto está configurado para usar migraciones y seeders de Sequelize para 
 -   [x] **Rediseño UI/UX:** Se ha aplicado un rediseño visual completo para una apariencia más profesional, limpia y accesible.
 -   [x] **Modo Oscuro:** Añadir un tema oscuro para reducir la fatiga visual.
 -   [x] **Arrastrar y Soltar (Drag and Drop):** En la web, permitir que se reordenen los pictogramas en la frase arrastrándolos.
+-   [x] **Grabación de Voz:** Se ha añadido la capacidad de grabar una voz personalizada para las frases rápidas, permitiendo una comunicación más personal y familiar. También se puede ajustar el volumen de reproducción.
 -   [ ] **Categorías:** Permitir agrupar los pictogramas por categorías ("Comida", "Animales", "Acciones").
 -   [ ] **Búsqueda por Categorías:** Además de la búsqueda por texto, permitir filtrar los pictogramas por las categorías creadas.
 -   [ ] **Historial de Frases:** Implementar un historial de frases creadas para un acceso rápido y repetido.

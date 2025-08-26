@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
     imageUrl: {
       type: DataTypes.TEXT,
       allowNull: false
+    },
+    audioUrl: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,

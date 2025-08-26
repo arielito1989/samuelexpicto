@@ -220,7 +220,7 @@ function App() {
         </div>
       )}
 
-      {activeTab === 'create' && !editMode && (
+      {(editMode || activeTab === 'create') && (
         <PictogramGrid
           pictograms={filteredPictograms}
           onPictogramSelect={handlePictogramSelect}
@@ -233,17 +233,6 @@ function App() {
 
       {activeTab === 'quick' && (
         <PhraseGrid editMode={editMode} />
-      )}
-
-      {editMode && (
-         <PictogramGrid
-          pictograms={filteredPictograms}
-          onPictogramSelect={handlePictogramSelect}
-          editMode={editMode}
-          onEdit={handleEditSelect}
-          onDelete={handleDelete}
-          isLoading={isLoading}
-        />
       )}
     </div>
   );

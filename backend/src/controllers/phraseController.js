@@ -1,10 +1,8 @@
 const { Phrase } = require('../../models');
 
 exports.getAllPhrases = async (req, res) => {
-  console.log('--> Petición GET a /api/phrases recibida');
   try {
     const phrases = await Phrase.findAll();
-    console.log(`    Encontradas ${phrases.length} frases.`);
     res.json(phrases);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -14,9 +12,9 @@ exports.getAllPhrases = async (req, res) => {
 exports.createPhrase = async (req, res) => {
   console.log('--> Petición POST a /api/phrases recibida con:', req.body);
   try {
-    const { title, phrase, imageUrl } = req.body;
+    const { title, phrase, imageUrl, audioUrl } = req.body;
     // Mapear el campo 'phrase' del request a 'fullSentence' en el modelo
-    const newPhrase = await Phrase.create({ title, fullSentence: phrase, imageUrl });
+    const newPhrase = await Phrase.create({ title, fullSentence: phrase, imageUrl, audioUrl });
     console.log('    Frase creada con éxito en la BD:', newPhrase.toJSON());
     res.status(201).json(newPhrase);
   } catch (error) {
@@ -28,9 +26,10 @@ exports.createPhrase = async (req, res) => {
 exports.updatePhrase = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, phrase, imageUrl } = req.body;
+    const { title, phrase, imageUrl, audioUrl } = req.body;
+    console.log(`Updating phrase ${id} with audioUrl:`, audioUrl);
     // Mapear el campo 'phrase' del request a 'fullSentence' en el modelo
-    const [updated] = await Phrase.update({ title, fullSentence: phrase, imageUrl }, {
+    const [updated] = await Phrase.update({ title, fullSentence: phrase, imageUrl, audioUrl }, {
       where: { id }
     });
     if (updated) {

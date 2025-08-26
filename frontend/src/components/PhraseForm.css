@@ -70,3 +70,69 @@
     margin-left: 10px;
     background-color: var(--color-secondary);
 }
+
+.audio-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.device-selector {
+  margin-bottom: 10px;
+}
+
+.visualizer {
+  margin-top: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.recorded-audio {
+  margin-top: 10px;
+}
+
+.recorded-audio audio {
+  width: 100%;
+}
+
+.recorded-audio button {
+  margin-left: 10px;
+}
+
+.selected-audio {
+  margin-top: 10px;
+}
+
+.selected-audio p {
+  font-weight: bold;
+}
+
+.selected-audio audio {
+  width: 100%;
+}
+
+.selected-audio button {
+  margin-left: 10px;
+}
+
+.current-audio {
+  margin-top: 10px;
+}
+
+.current-audio p {
+  font-weight: bold;
+}
+
+.current-audio audio {
+  width: 100%;
+}
+
+.current-audio button {
+  margin-left: 10px;
+}
