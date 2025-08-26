@@ -1,30 +1,58 @@
 .add-pictogram-form {
-  margin-top: 20px;
-  padding: 20px;
-  border: var(--border-width) solid var(--border-color);
-  border-radius: var(--border-radius);
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: var(--surface-color);
-  box-shadow: var(--box-shadow);
+  padding: 25px;
+  text-align: left;
 }
 
 .form-group {
-  margin-bottom: 15px;
-  text-align: left;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   color: var(--text-color);
+  font-weight: 700;
+  font-size: var(--font-size-base);
 }
 
 .form-group input {
   width: 100%;
-  padding: 8px;
+  padding: 12px 15px;
   box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25);
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.cancel-button {
+  padding: 12px 24px;
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--text-color-muted);
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  border: var(--border-width) solid var(--border-color);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cancel-button:hover {
+  background-color: var(--surface-color);
+  color: var(--text-color);
 }

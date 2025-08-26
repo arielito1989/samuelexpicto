@@ -12,7 +12,6 @@ const PictogramForm = ({ pictogramToEdit, onSave, onCancel }) => {
       setName(pictogramToEdit.name);
       setImageUrl(pictogramToEdit.imageUrl);
     } else {
-      // Limpiar el formulario si no estamos editando
       setName('');
       setImageUrl('');
     }
@@ -25,6 +24,11 @@ const PictogramForm = ({ pictogramToEdit, onSave, onCancel }) => {
       return;
     }
     onSave({ name, imageUrl });
+    // Limpiar formulario después de guardar
+    if (!isEditing) {
+      setName('');
+      setImageUrl('');
+    }
   };
 
   return (
@@ -38,19 +42,23 @@ const PictogramForm = ({ pictogramToEdit, onSave, onCancel }) => {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder="Ej: Jugar"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="imageUrl">URL de la Imagen:</label>
+          <label htmlFor="imageUrl">URL de la Imagen (o Base64):</label>
           <input
             type="text"
             id="imageUrl"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
+            placeholder="data:image/png;base64,..."
           />
         </div>
-        <button type="submit">{isEditing ? 'Guardar Cambios' : 'Añadir Pictograma'}</button>
-        {isEditing && <button type="button" onClick={onCancel}>Cancelar</button>}
+        <div className="form-buttons">
+          {isEditing && <button type="button" onClick={onCancel} className="cancel-button">Cancelar</button>}
+          <button type="submit" className="primary-button">{isEditing ? 'Guardar Cambios' : 'Añadir'}</button>
+        </div>
       </form>
     </div>
   );

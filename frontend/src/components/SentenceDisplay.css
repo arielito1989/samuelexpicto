@@ -1,65 +1,82 @@
-/* Estilos para el contenedor de la frase */
 .sentence-display-container {
-  padding: 15px;
-  margin: 20px;
-  border: var(--border-width) solid var(--border-color);
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  min-height: 50px;
-  background-color: var(--background-color);
-  display: flex; /* Usar flexbox para alinear los chips */
-  flex-wrap: wrap; /* Permitir que los chips pasen a la siguiente línea */
+  min-height: 80px;
+  background-color: var(--surface-color);
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  box-shadow: var(--box-shadow);
+}
+
+.sentence-chips-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  flex-grow: 1;
   align-items: center;
-  gap: 10px; /* Espacio entre chips */
 }
 
-/* Estilo para el texto placeholder cuando no hay frase */
 .placeholder-text {
-  color: var(--color-secondary);
+  color: var(--text-color-muted);
   font-style: italic;
+  align-self: center;
+  font-size: var(--font-size-lg);
+  margin: auto;
 }
 
-/* Estilo para cada chip de palabra */
 .sentence-chip {
   display: flex;
   align-items: center;
-  background-color: var(--surface-color);
-  padding: 8px 12px;
-  border-radius: 16px; /* Bordes más redondeados para el chip */
-  font-size: 1.1em;
-  box-shadow: var(--box-shadow);
+  background-color: var(--background-color);
+  padding: 8px 15px 8px 10px;
+  border-radius: 30px;
+  font-size: 1.2em;
+  font-weight: 700;
+  border: 1px solid var(--border-color);
   transition: all 0.2s ease-in-out;
 }
 
-/* Botón de borrar en cada chip */
+.sentence-chip img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+}
+
 .remove-chip-button {
   background: none;
   border: none;
   cursor: pointer;
-  margin-left: 8px;
-  font-size: 1em;
-  color: var(--color-secondary);
+  margin-left: 10px;
+  font-size: 1.2em;
+  color: var(--text-color-muted);
   padding: 0;
   display: flex;
   align-items: center;
 }
 
 .remove-chip-button:hover {
-  color: var(--color-danger);
+  color: var(--danger-color);
   transform: scale(1.1);
 }
 
-/* Botón para borrar toda la frase */
 .clear-sentence-button {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.5rem; /* Icono más grande */
-  color: var(--color-secondary);
-  margin-left: auto; /* Empuja el botón al final */
+  font-size: 1.8rem;
+  color: var(--text-color-muted);
+  margin-left: auto;
   padding: 5px;
+  align-self: center;
 }
 
 .clear-sentence-button:hover {
-  color: var(--color-danger);
+  color: var(--danger-color);
   transform: scale(1.1);
 }

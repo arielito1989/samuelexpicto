@@ -1,56 +1,65 @@
 .pictogram-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Ligeramente más pequeñas que antes para un look más refinado */
+  gap: 25px;
   padding: 20px;
 }
 
 .pictogram-card {
-  position: relative; /* Necesario para el feedback táctil */
-  border: var(--border-width) solid var(--border-color);
+  position: relative;
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  padding: 10px;
   text-align: center;
   cursor: pointer;
   background-color: var(--surface-color);
   box-shadow: var(--box-shadow);
-  /* Transición para todos los efectos */
-  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .pictogram-card:hover {
-  transform: translateY(-5px); /* Efecto de elevarse */
-  border-color: var(--color-primary);
-  box-shadow: var(--box-shadow-lg); /* Sombra más pronunciada */
+  transform: translateY(-5px);
+  border-color: var(--primary-color);
+  box-shadow: var(--box-shadow-lg);
 }
 
-/* Feedback táctil al hacer clic */
 .pictogram-card:active {
-  transform: translateY(-2px) scale(0.98); /* Se presiona y encoge un poco */
+  transform: translateY(-2px) scale(0.98);
   box-shadow: var(--box-shadow);
 }
 
 .pictogram-card img {
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  margin-bottom: 10px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 8px; /* Bordes ligeramente redondeados para la imagen */
+  margin-bottom: 15px;
+}
+
+.pictogram-card p {
+  margin: 0;
+  font-weight: 700;
+  font-size: var(--font-size-base);
 }
 
 .edit-buttons {
-  margin-top: 10px;
+  margin-top: 15px;
   display: flex;
   justify-content: space-around;
 }
 
-/* Estilos para los nuevos botones con iconos */
 .icon-button {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.2rem; /* Tamaño del icono */
+  font-size: 1.3rem;
   padding: 5px;
-  color: var(--color-secondary);
-  transition: color 0.2s ease-in-out, transform 0.1s ease;
+  color: var(--text-color-muted);
+  transition: color 0.2s ease, transform 0.1s ease;
 }
 
 .icon-button:hover {
@@ -58,9 +67,9 @@
 }
 
 .edit-button:hover {
-  color: var(--color-primary);
+  color: var(--primary-color);
 }
 
 .delete-button:hover {
-  color: var(--color-danger);
+  color: var(--danger-color);
 }

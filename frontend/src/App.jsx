@@ -4,15 +4,8 @@ import PictogramGrid from './components/PictogramGrid';
 import SentenceDisplay from './components/SentenceDisplay';
 import PictogramForm from './components/PictogramForm';
 import PhraseGrid from './components/PhraseGrid';
+import { FaMoon, FaSun } from 'react-icons/fa'; // Iconos para el botón de tema
 import './components/App.css';
-
-// Objeto con los colores por defecto de la aplicación
-const defaultTheme = {
-  primary: '#007bff',
-  surface: '#f8f9fa',
-  background: '#ffffff',
-  text: '#343a40'
-};
 
 function App() {
   const [sentence, setSentence] = useState([]);
@@ -24,24 +17,19 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [availableVoices, setAvailableVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(() => localStorage.getItem('selectedVoiceName') || '');
-
-  // Estado para el tema de colores, inicializado desde localStorage o con los valores por defecto
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem('userTheme');
-    return savedTheme ? JSON.parse(savedTheme) : defaultTheme;
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('isDarkMode') === 'true';
   });
 
-  // Efecto para aplicar el tema de colores a las variables CSS y guardarlo
+  // Efecto para aplicar la clase del modo oscuro al body
   useEffect(() => {
-    // Aplicar los colores del estado del tema a las variables CSS en el elemento raíz
-    document.documentElement.style.setProperty('--color-primary', theme.primary);
-    document.documentElement.style.setProperty('--surface-color', theme.surface);
-    document.documentElement.style.setProperty('--background-color', theme.background);
-    document.documentElement.style.setProperty('--text-color', theme.text);
-    
-    // Guardar el tema actual en localStorage
-    localStorage.setItem('userTheme', JSON.stringify(theme));
-  }, [theme]);
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+    localStorage.setItem('isDarkMode', isDarkMode);
+  }, [isDarkMode]);
 
   useEffect(() => {
     if (selectedVoice) {
@@ -93,8 +81,21 @@ function App() {
 
   const handlePictogramSelect = (pictogram) => {
     if (!editMode) {
-      setSentence(prevSentence => [...prevSentence, pictogram.name]);
+      const newWord = {
+        id: `word-${Date.now()}-${Math.random()}`,
+        name: pictogram.name,
+        imageUrl: pictogram.imageUrl
+      };
+      setSentence(prevSentence => [...prevSentence, newWord]);
     }
+  };
+
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+    const items = Array.from(sentence);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setSentence(items);
   };
 
   const handleAddPictogram = async (pictogramData) => {
@@ -144,7 +145,7 @@ function App() {
 
   const speakSentence = () => {
     if ('speechSynthesis' in window && sentence.length > 0) {
-      const utterance = new SpeechSynthesisUtterance(sentence.join(' '));
+      const utterance = new SpeechSynthesisUtterance(sentence.map(word => word.name).join(' '));
       const voice = availableVoices.find(v => v.name === selectedVoice);
       if (voice) {
         utterance.voice = voice;
@@ -168,6 +169,7 @@ function App() {
       <button className="primary-button" onClick={() => { setEditMode(!editMode); setPictogramToEdit(null); }}>
         {editMode ? 'Salir del Modo Edición' : 'Entrar al Modo Edición'}
       </button>
+
       <div className="tabs-container">
         <button onClick={() => setActiveTab('create')} className={`tab-button ${activeTab === 'create' ? 'active' : ''}`}>
           Crear Frase
@@ -179,7 +181,7 @@ function App() {
 
       {activeTab === 'create' && (
         <>
-          <SentenceDisplay sentence={sentence} setSentence={setSentence} />
+          <SentenceDisplay sentence={sentence} setSentence={setSentence} onDragEnd={handleOnDragEnd} />
           <button className="primary-button" onClick={speakSentence} disabled={sentence.length === 0}>
             Leer Frase
           </button>
@@ -187,7 +189,7 @@ function App() {
       )}
 
       {editMode && (
-        <>
+        <div className="settings-container">
           <div className="search-container">
             <input
               type="text"
@@ -212,27 +214,10 @@ function App() {
               ))}
             </select>
           </div>
-
-          <div className="theme-editor-container">
-            <h4>Personalizar Colores</h4>
-            <div className="color-picker-group">
-              <label>Primario:</label>
-              <input type="color" value={theme.primary} onChange={e => setTheme({...theme, primary: e.target.value})} />
-            </div>
-            <div className="color-picker-group">
-              <label>Superficie:</label>
-              <input type="color" value={theme.surface} onChange={e => setTheme({...theme, surface: e.target.value})} />
-            </div>
-            <div className="color-picker-group">
-              <label>Fondo:</label>
-              <input type="color" value={theme.background} onChange={e => setTheme({...theme, background: e.target.value})} />
-            </div>
-            <div className="color-picker-group">
-              <label>Texto:</label>
-              <input type="color" value={theme.text} onChange={e => setTheme({...theme, text: e.target.value})} />
-            </div>
-          </div>
-        </>
+          <button onClick={() => setIsDarkMode(!isDarkMode)} className="primary-button" style={{marginTop: '20px'}}>
+            {isDarkMode ? <FaSun /> : <FaMoon />} {isDarkMode ? 'Modo Claro' : 'Modo Oscuro'}
+          </button>
+        </div>
       )}
 
       {activeTab === 'create' && !editMode && (
