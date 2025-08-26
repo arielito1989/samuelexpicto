@@ -50,23 +50,34 @@ function App() {
   }, [selectedVoice]);
 
   useEffect(() => {
+    fetchPictograms();
+  }, []);
+
+  useEffect(() => {
     const populateVoiceList = () => {
-      const voices = speechSynthesis.getVoices();
+      const voices = window.speechSynthesis.getVoices();
       if (voices.length === 0) return;
+
       const spanishVoices = voices.filter(voice => voice.lang.startsWith('es'));
       setAvailableVoices(spanishVoices);
-      if (spanishVoices.length > 0 && !selectedVoice) {
+
+      const storedVoice = localStorage.getItem('selectedVoiceName');
+      const isStoredVoiceAvailable = spanishVoices.some(v => v.name === storedVoice);
+
+      if (storedVoice && isStoredVoiceAvailable) {
+        setSelectedVoice(storedVoice);
+      } else if (spanishVoices.length > 0) {
         setSelectedVoice(spanishVoices[0].name);
       }
     };
 
     populateVoiceList();
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = populateVoiceList;
-    }
+    window.speechSynthesis.onvoiceschanged = populateVoiceList;
 
-    fetchPictograms();
-  }, [selectedVoice]);
+    return () => {
+      window.speechSynthesis.onvoiceschanged = null;
+    };
+  }, []);
 
   const fetchPictograms = async () => {
     setIsLoading(true);
