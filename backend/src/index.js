@@ -16,6 +16,9 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Servir archivos estáticos
+app.use('/public', express.static('public'));
+
 // Rutas
 app.get('/', (req, res) => {
   res.send('¡El servidor del comunicador pictográfico está en marcha!');

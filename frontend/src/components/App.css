@@ -162,3 +162,30 @@ body {
   color: var(--primary-color);
   border-bottom: 3px solid var(--primary-color);
 }
+
+/* --- Edit Mode Styles --- */
+.edit-mode-container {
+  width: 100%;
+  padding: 1rem 0;
+  background-color: var(--background-color);
+  min-height: 70vh;
+}
+
+.edit-view-container {
+  background-color: var(--surface-color);
+  padding: 2rem 2.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-lg);
+  max-width: 800px;
+  margin: 2rem auto;
+  border: 1px solid var(--border-color);
+}
+
+.edit-view-container h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}

@@ -10,15 +10,27 @@ exports.getAllPhrases = async (req, res) => {
 };
 
 exports.createPhrase = async (req, res) => {
-  console.log('--> Petición POST a /api/phrases recibida con:', req.body);
   try {
-    const { title, phrase, imageUrl, audioUrl } = req.body;
-    // Mapear el campo 'phrase' del request a 'fullSentence' en el modelo
-    const newPhrase = await Phrase.create({ title, fullSentence: phrase, imageUrl, audioUrl });
-    console.log('    Frase creada con éxito en la BD:', newPhrase.toJSON());
+    // Text fields from the form are in req.body
+    const { title, fullSentence, imageUrl } = req.body;
+    let audioUrl = null;
+
+    // Multer adds the file object to the request if it exists
+    if (req.file) {
+      // Construct the URL path for the uploaded file to be saved in the DB
+      audioUrl = `/public/uploads/audio/${req.file.filename}`;
+    }
+
+    const newPhrase = await Phrase.create({
+      title,
+      fullSentence,
+      imageUrl,
+      audioUrl
+    });
+
     res.status(201).json(newPhrase);
   } catch (error) {
-    console.error('    Error al crear la frase:', error);
+    console.error('Error creating phrase:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -26,12 +38,23 @@ exports.createPhrase = async (req, res) => {
 exports.updatePhrase = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, phrase, imageUrl, audioUrl } = req.body;
-    console.log(`Updating phrase ${id} with audioUrl:`, audioUrl);
-    // Mapear el campo 'phrase' del request a 'fullSentence' en el modelo
-    const [updated] = await Phrase.update({ title, fullSentence: phrase, imageUrl, audioUrl }, {
+    const { title, fullSentence, imageUrl } = req.body;
+
+    const dataToUpdate = {
+      title,
+      fullSentence,
+      imageUrl,
+    };
+
+    // If a new file is uploaded, add its URL to the update object
+    if (req.file) {
+      dataToUpdate.audioUrl = `/public/uploads/audio/${req.file.filename}`;
+    }
+
+    const [updated] = await Phrase.update(dataToUpdate, {
       where: { id }
     });
+
     if (updated) {
       const updatedPhrase = await Phrase.findOne({ where: { id } });
       res.status(200).json(updatedPhrase);
@@ -39,6 +62,7 @@ exports.updatePhrase = async (req, res) => {
       res.status(404).json({ error: 'Phrase not found' });
     }
   } catch (error) {
+    console.error('Error updating phrase:', error);
     res.status(500).json({ error: error.message });
   }
 };

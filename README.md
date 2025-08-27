@@ -6,13 +6,13 @@ Este proyecto es una aplicación de comunicación asistida por pictogramas, dise
 
 - **Constructor de Frases:** Permite a los usuarios seleccionar una secuencia de pictogramas para construir una frase, con la habilidad de reordenarlos arrastrándolos.
 - **Síntesis de Voz (TTS):** Reproduce las frases construidas en voz alta, con opción a seleccionar diferentes voces en español.
-- **Frases Rápidas:** Un modo alternativo que permite guardar y reproducir frases completas de uso frecuente con un solo clic.
+- **Gestión de Frases:** Permite guardar frases personalizadas para un acceso rápido. Cada frase puede tener un audio grabado por el usuario, ofreciendo una voz familiar en lugar de una sintética.
 - **Diseño Profesional y Accesible:** La interfaz ha sido rediseñada por un profesional UI/UX para ser calma, clara y de alto contraste, ideal para niños con sensibilidades sensoriales.
 - **Modo Oscuro:** Incluye un modo oscuro persistente para reducir la fatiga visual.
-- **Modo Edición:** Una sección protegida para que familiares o tutores puedan gestionar el contenido:
-  - **CRUD de Pictogramas:** Añadir, editar o eliminar pictogramas.
-  - **CRUD de Frases Rápidas:** Añadir, editar o eliminar frases de uso frecuente.
-  - **Buscador:** Encontrar pictogramas rápidamente por su nombre.
+- **Modo Edición Intuitivo:** Una sección de gestión rediseñada para ser más clara y fácil de usar. Al entrar, un menú principal ofrece tres opciones:
+  - **Agregar Contenido:** Un submenú para elegir si se quiere crear un pictograma para construir frases o una frase rápida con audio personalizado.
+  - **Editar/Eliminar Pictogramas:** Muestra una cuadrícula con solo los pictogramas básicos para su gestión.
+  - **Editar/Eliminar Frases Rápidas:** Muestra una cuadrícula con solo las frases rápidas para su gestión.
 - **Multiplataforma:**
   - **Web:** Aplicación web progresiva (PWA) completamente funcional.
   - **Escritorio:** Empaquetada con Electron para una experiencia nativa en sistemas operativos de escritorio.
@@ -58,20 +58,27 @@ Sigue estos pasos para levantar el entorno de desarrollo completo.
     npm install --prefix frontend
     ```
 
-4.  **Poblar la Base de Datos (Solo la primera vez)**
+4.  **Ejecutar las Migraciones (Solo la primera vez)**
+
+    Este comando creará la estructura de la base de datos (tablas y columnas).
+    ```bash
+    docker-compose exec api npx sequelize-cli db:migrate
+    ```
+
+5.  **Poblar la Base de Datos (Solo la primera vez)**
 
     Ejecuta el siguiente comando para llenar la base de datos con los pictogramas iniciales.
     ```bash
     docker-compose exec api npx sequelize-cli db:seed:all
     ```
 
-5.  **Ejecutar el Frontend**
+6.  **Ejecutar el Frontend**
 
     ```bash
     npm run dev --prefix frontend
     ```
 
-6.  **¡Listo!**
+7.  **¡Listo!**
 
     Abre tu navegador y visita [http://localhost:5173](http://localhost:5173) para ver la aplicación en funcionamiento.
 
@@ -92,7 +99,8 @@ El proyecto está configurado para usar migraciones y seeders de Sequelize para 
 -   [x] **Rediseño UI/UX:** Se ha aplicado un rediseño visual completo para una apariencia más profesional, limpia y accesible.
 -   [x] **Modo Oscuro:** Añadir un tema oscuro para reducir la fatiga visual.
 -   [x] **Arrastrar y Soltar (Drag and Drop):** En la web, permitir que se reordenen los pictogramas en la frase arrastrándolos.
--   [x] **Grabación de Voz:** Se ha añadido la capacidad de grabar una voz personalizada para las frases rápidas, permitiendo una comunicación más personal y familiar. También se puede ajustar el volumen de reproducción.
+-   [x] **Gestión de Frases con Audio:** Se ha implementado un sistema completo (CRUD) para crear, editar y eliminar frases personalizadas.
+-   [x] **Grabación de Voz:** Se ha añadido la capacidad de grabar una voz personalizada para las frases, permitiendo una comunicación más personal y familiar. También se puede ajustar el volumen de reproducción.
 -   [ ] **Categorías:** Permitir agrupar los pictogramas por categorías ("Comida", "Animales", "Acciones").
 -   [ ] **Búsqueda por Categorías:** Además de la búsqueda por texto, permitir filtrar los pictogramas por las categorías creadas.
 -   [ ] **Historial de Frases:** Implementar un historial de frases creadas para un acceso rápido y repetido.
