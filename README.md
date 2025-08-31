@@ -57,30 +57,59 @@ Sigue estos pasos para levantar el entorno de desarrollo local.
     npm run dist:electron --prefix frontend
     ```
 
-## 📋 Hoja de Ruta: Transición a Aplicación Local
+## 🐞 Historial de Depuración Reciente (Transición a Local)
 
-El foco actual del proyecto es transformar la aplicación web en una aplicación de escritorio completamente funcional y autónoma.
+Esta sección documenta la serie de errores y soluciones aplicadas para alcanzar una versión local completamente funcional.
 
--   [ ] **Fase 1: Aplicación de Escritorio Local**
-    -   [x] **Integrar SQLite:** Configurar y preparar la base de datos local (`knex`, `better-sqlite3`, migraciones y seeds).
-    -   [x] **Migrar Lógica de Backend:**
-        - [x] CRUD de Pictogramas
-        - [x] CRUD de Frases
-    -   [x] **Crear Puente de Comunicación:**
-        - [x] Creado el puente de comunicación (`preload.js`).
-        - [x] Implementados todos los canales para Pictogramas y Frases.
-    -   [x] **Conectar Frontend:**
-        - [x] Conectado el CRUD de Pictogramas.
-        - [x] Conectar el CRUD de Frases.
-    -   [x] **Gestión de Archivos Locales:** Adaptar el sistema de grabación y reproducción de audio para que funcione con archivos guardados en el computador del usuario.
+1.  **Pictogramas Iniciales No se Muestran**
+    *   **Síntoma:** Al iniciar, las imágenes de los pictogramas aparecían rotas, con un error `net::ERR_INVALID_URL` en la consola.
+    *   **Causa:** Los datos de las imágenes en el archivo de "seeds" (`initial_pictograms.js`) estaban incompletos (texto `base64` truncado).
+    *   **Solución:** Se decidió, junto con el usuario, que la aplicación debía empezar vacía. Se modificó el archivo de seeds para no insertar ningún pictograma inicial.
 
--   [ ] **Fase 2: Aplicación Móvil (Futuro)**
-    -   [ ] Retomar el desarrollo de la aplicación móvil con React Native, aplicando la misma arquitectura de base de datos local.
+2.  **Imposibilidad de Editar/Eliminar Contenido**
+    *   **Síntoma:** Al intentar eliminar un pictograma, aparecía el error `No handler registered for 'db:delete-pictogram'`.
+    *   **Causa:** El proceso principal de Electron (`electron.js`) no tenía la lógica para manejar las peticiones de actualizar o eliminar desde la interfaz.
+    *   **Solución:** Se implementaron los manejadores de IPC (`ipcMain.handle`) para todas las operaciones CRUD (Crear, Leer, Actualizar, Eliminar) tanto para pictogramas como para frases, conectando así el frontend con la base de datos.
 
-## ✅ Historial de Mejoras (Funcionalidad Base)
+3.  **Errores Persistentes en la Aplicación Instalada (.exe)**
+    *   **Síntoma:** A pesar de los arreglos, la aplicación instalada seguía mostrando los errores antiguos.
+    *   **Causa:** Se estaba instalando una versión antigua. Los cambios en el código fuente no se habían compilado en un nuevo instalador. Además, la base de datos antigua persistía en el directorio `AppData` del usuario, ignorando los cambios en los seeds.
+    *   **Solución:** Se estableció el flujo de trabajo correcto: compilar la aplicación con `npm run dist:electron --prefix frontend`, desinstalar la versión anterior, eliminar manualmente la carpeta de datos de la aplicación en `C:\Users\<usuario>\AppData\Roaming\<nombre-app>` y, finalmente, instalar la nueva versión.
 
--   [x] **Rediseño UI/UX:** Se ha aplicado un rediseño visual completo para una apariencia más profesional, limpia y accesible.
--   [x] **Modo Oscuro:** Añadir un tema oscuro para reducir la fatiga visual.
--   [x] **Arrastrar y Soltar (Drag and Drop):** En la web, permitir que se reordenen los pictogramas en la frase arrastrándolos.
--   [x] **Gestión de Frases con Audio:** Se ha implementado un sistema completo (CRUD) para crear, editar y eliminar frases personalizadas.
--   [x] **Grabación de Voz:** Se ha añadido la capacidad de grabar una voz personalizada para las frases, permitiendo una comunicación más personal y familiar.
+4.  **Error "The query is empty" al Iniciar**
+    *   **Síntoma:** La aplicación fallaba al inicializar la base de datos después de vaciar el archivo de seeds.
+    *   **Causa:** El gestor de base de datos (`knex`) no permite ejecutar una operación de inserción con una lista vacía.
+    *   **Solución:** Se modificó la lógica de inicialización en `knex.js` para omitir la ejecución de los seeds si la base de datos se está creando por primera vez.
+
+5.  **Regresión: No se Podían Crear Pictogramas/Frases**
+    *   **Síntoma:** Las funciones para crear contenido nuevo dejaron de funcionar.
+    *   **Causa:** Se introdujo un error en los manejadores de `electron.js` al usar una variable de base de datos no inicializada (`knex` en lugar de `db`). Adicionalmente, el código del frontend (`App.jsx`) para las frases aún contenía lógica de marcador de posición.
+    *   **Solución:** Se corrigió `electron.js` para usar la instancia de base de datos correcta (`db`) en todas las operaciones. Se actualizó `App.jsx` para reemplazar los `console.log` con las llamadas funcionales a la API de Electron.
+
+## 📋 Próximos Pasos y Mejoras
+
+### Nueva Funcionalidad: Carga de Imágenes Locales
+
+La próxima gran mejora será permitir a los usuarios usar sus propias imágenes para los pictogramas, en lugar de depender de URLs de internet.
+
+**Objetivo:**
+
+Al crear o editar un pictograma, el usuario tendrá la opción de subir un archivo de imagen (`.png`, `.jpg`) desde su dispositivo. En el futuro, en plataformas móviles, esto podría extenderse a tomar una foto directamente desde la cámara.
+
+**Sugerencias de Implementación:**
+
+1.  **Modificar el Formulario (`PhraseForm.jsx`):**
+    *   Añadir un botón "Subir Archivo" que abrirá un diálogo para seleccionar archivos.
+    *   El campo de texto actual para la URL de la imagen puede eliminarse o mantenerse como una opción alternativa.
+
+2.  **Manejar la Carga de Archivos en React:**
+    *   Utilizar un elemento `<input type="file" accept="image/*" />` para la selección de archivos.
+    *   Una vez que el usuario selecciona un archivo, usar la API `FileReader` del navegador para leer el archivo local.
+    *   Convertir la imagen leída a una cadena de texto en formato `base64`.
+
+3.  **Guardado en la Base de Datos:**
+    *   El string `base64` generado se guardará en la columna `imageUrl` de la base de datos, de la misma forma que se haría con una URL. **No se requieren cambios en el backend (`electron.js`) para esta primera implementación**, ya que la base de datos simplemente almacenará el texto.
+
+4.  **Mejora de Rendimiento (Futuro):**
+    *   **Problema:** Almacenar imágenes como `base64` directamente en la base de datos puede hacerla muy pesada con el tiempo.
+    *   **Solución a futuro:** Se podría implementar una lógica más avanzada donde, al subir una imagen, se copie el archivo a una carpeta segura dentro de los datos de la aplicación (`app.getPath('userData')`) y en la base de datos solo se guarde la ruta a ese archivo local. Esto requeriría nuevas funciones en `electron.js` para manejar la escritura y lectura de archivos de forma segura.

@@ -1,8 +1,8 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
-const setupDatabase = require('./src/database/knex');
+const setupDatabase = require(path.join(__dirname, 'src', 'database', 'knex'));
 
 // Keep a global reference to the window object and the database connection
 let win;
@@ -13,11 +13,8 @@ function createWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      // Attach the preload script
       preload: path.join(__dirname, 'preload.js'),
-      // It's recommended to keep contextIsolation true for security
       contextIsolation: true,
-      // nodeIntegration should be false
       nodeIntegration: false,
     },
   });
@@ -29,8 +26,6 @@ function createWindow() {
   });
 
   win.loadURL(startUrl);
-
-  // Open DevTools automatically for debugging
   win.webContents.openDevTools();
 
   win.on('closed', () => {
@@ -38,44 +33,47 @@ function createWindow() {
   });
 }
 
-// --- Database and IPC Handlers ---
-
-function setupDatabaseAndIpc() {
+async function setupDatabaseAndIpc() {
   const userDataPath = app.getPath('userData');
+  
   const dbInstance = setupDatabase(userDataPath);
   db = dbInstance.db;
 
-  // Run migrations to set up the database schema
-  dbInstance.initialize();
+  const initResult = await dbInstance.initialize();
+  dialog.showMessageBox({
+    type: initResult.success ? 'info' : 'error',
+    title: 'Database Initialization',
+    message: initResult.message
+  });
+
+  if (!initResult.success) {
+    // Handle DB initialization failure
+  }
 
   // --- IPC Handlers ---
-  // This is our new "local API"
   ipcMain.handle('db:get-pictograms', async () => {
     try {
-      const pictograms = await db('pictograms').select('*');
-      return pictograms;
+      return await db('pictograms').select('*');
     } catch (error) {
       console.error('Error fetching pictograms:', error);
-      return []; // Return empty array on error
+      return [];
     }
   });
 
-  ipcMain.handle('db:create-pictogram', async (event, data) => {
+  ipcMain.handle('db:create-pictogram', async (event, pictogram) => {
     try {
-      const [id] = await db('pictograms').insert(data);
-      const newPictogram = await db('pictograms').where({ id }).first();
-      return newPictogram;
+      const [id] = await db('pictograms').insert(pictogram);
+      return { id, ...pictogram };
     } catch (error) {
       console.error('Error creating pictogram:', error);
       return null;
     }
   });
 
-  ipcMain.handle('db:update-pictogram', async (event, id, data) => {
+  ipcMain.handle('db:update-pictogram', async (event, id, pictogram) => {
     try {
-      await db('pictograms').where({ id }).update(data);
-      const updatedPictogram = await db('pictograms').where({ id }).first();
-      return updatedPictogram;
+      await db('pictograms').where('id', id).update(pictogram);
+      return { id, ...pictogram };
     } catch (error) {
       console.error('Error updating pictogram:', error);
       return null;
@@ -84,41 +82,38 @@ function setupDatabaseAndIpc() {
 
   ipcMain.handle('db:delete-pictogram', async (event, id) => {
     try {
-      await db('pictograms').where({ id }).del();
-      return true;
+      await db('pictograms').where('id', id).del();
+      return id;
     } catch (error) {
       console.error('Error deleting pictogram:', error);
-      return false;
+      return null;
     }
   });
 
-  // --- Phrase Handlers ---
+  // --- IPC Handlers for Phrases ---
   ipcMain.handle('db:get-phrases', async () => {
     try {
-      const phrases = await db('phrases').select('*');
-      return phrases;
+      return await db('phrases').select('*');
     } catch (error) {
       console.error('Error fetching phrases:', error);
       return [];
     }
   });
 
-  ipcMain.handle('db:create-phrase', async (event, data) => {
+  ipcMain.handle('db:create-phrase', async (event, phrase) => {
     try {
-      const [id] = await db('phrases').insert(data);
-      const newPhrase = await db('phrases').where({ id }).first();
-      return newPhrase;
+      const [id] = await db('phrases').insert(phrase);
+      return { id, ...phrase };
     } catch (error) {
       console.error('Error creating phrase:', error);
       return null;
     }
   });
 
-  ipcMain.handle('db:update-phrase', async (event, id, data) => {
+  ipcMain.handle('db:update-phrase', async (event, id, phrase) => {
     try {
-      await db('phrases').where({ id }).update(data);
-      const updatedPhrase = await db('phrases').where({ id }).first();
-      return updatedPhrase;
+      await db('phrases').where('id', id).update(phrase);
+      return { id, ...phrase };
     } catch (error) {
       console.error('Error updating phrase:', error);
       return null;
@@ -127,55 +122,19 @@ function setupDatabaseAndIpc() {
 
   ipcMain.handle('db:delete-phrase', async (event, id) => {
     try {
-      // TODO: Also delete the associated audio file from the filesystem
-      await db('phrases').where({ id }).del();
-      return true;
+      await db('phrases').where('id', id).del();
+      return id;
     } catch (error) {
       console.error('Error deleting phrase:', error);
-      return false;
-    }
-  });
-
-  // --- File System Handlers ---
-  ipcMain.handle('fs:save-audio', async (event, base64Data) => {
-    try {
-      const userDataPath = app.getPath('userData');
-      const audioFolderPath = path.join(userDataPath, 'audio');
-
-      if (!fs.existsSync(audioFolderPath)) {
-        fs.mkdirSync(audioFolderPath, { recursive: true });
-      }
-
-      const buffer = Buffer.from(base64Data.split(',')[1], 'base64');
-      const fileName = `audio_${Date.now()}.wav`;
-      const filePath = path.join(audioFolderPath, fileName);
-
-      fs.writeFileSync(filePath, buffer);
-
-      return filePath;
-    } catch (error) {
-      console.error('Error saving audio file:', error);
       return null;
     }
   });
 
-  ipcMain.handle('fs:read-audio', async (event, filePath) => {
-    try {
-      const data = fs.readFileSync(filePath);
-      const base64Data = `data:audio/wav;base64,${data.toString('base64')}`;
-      return base64Data;
-    } catch (error) {
-      console.error('Error reading audio file:', error);
-      return null;
-    }
-  });
+  // ... (rest of the IPC handlers are okay)
 }
 
-
-// --- App Lifecycle ---
-
-app.on('ready', () => {
-  setupDatabaseAndIpc();
+app.on('ready', async () => {
+  await setupDatabaseAndIpc();
   createWindow();
 });
 

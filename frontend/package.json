@@ -41,7 +41,9 @@
     "productName": "Comunicador Pictografico",
     "files": [
       "dist/**/*",
-      "electron.js"
+      "electron.js",
+      "preload.js",
+      "src/database/**/*"
     ],
     "directories": {
       "output": "dist_electron"

@@ -24,18 +24,12 @@ const setupDatabase = (userDataPath) => {
   const initialize = async () => {
     try {
       await db.migrate.latest();
-      console.log('Database migrations completed successfully.');
 
-      // Check if the database is empty before seeding
-      const pictograms = await db('pictograms').select('id').limit(1);
-      if (pictograms.length === 0) {
-        console.log('Database is empty, running seeds...');
-        await db.seed.run();
-        console.log('Database seeding completed successfully.');
-      }
-
+      // The database is empty, but we don't want to seed it initially.
+      // await db.seed.run();
+      return { success: true, message: 'Database initialized successfully.' };
     } catch (error) {
-      console.error('Error initializing database:', error);
+      return { success: false, message: `Error initializing database: ${error.message}` };
     }
   };
 

@@ -124,19 +124,36 @@ function App() {
 
   // Phrases
   const fetchPhrases = async () => {
-    // TODO: Migrate to local API (window.electronAPI.getPhrases)
-    console.log('Fetch phrases not implemented yet for local API');
-    setPhrases([]);
+    try {
+      const data = await window.electronAPI.getPhrases();
+      setPhrases(data || []);
+    } catch (error) {
+      console.error('Error al obtener las frases:', error);
+    }
   };
 
   const handlePhraseSave = async (phraseData) => {
-    // TODO: Migrate to local API (window.electronAPI.createPhrase / updatePhrase)
-    console.log('Save phrase not implemented yet for local API');
+    try {
+      if (phraseToEdit) {
+        await window.electronAPI.updatePhrase(phraseToEdit.id, phraseData);
+      } else {
+        await window.electronAPI.createPhrase(phraseData);
+      }
+      fetchPhrases();
+      setPhraseToEdit(null);
+      setEditView('edit_phrases');
+    } catch (error) {
+      console.error(`Error al guardar la frase:`, error);
+    }
   };
 
   const handlePhraseDelete = async (id) => {
-    // TODO: Migrate to local API (window.electronAPI.deletePhrase)
-    console.log('Delete phrase not implemented yet for local API');
+    try {
+      await window.electronAPI.deletePhrase(id);
+      fetchPhrases();
+    } catch (error) {
+      console.error('Error al eliminar la frase:', error);
+    }
   };
 
   const handlePhraseEditSelect = (phrase) => {
