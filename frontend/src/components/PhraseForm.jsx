@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import apiClient from '../api';
+import localApiClient from '../api';
 import './PhraseForm.css';
 
 const PhraseForm = ({ onSave, onCancel, phraseToEdit }) => {
@@ -8,6 +8,7 @@ const PhraseForm = ({ onSave, onCancel, phraseToEdit }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [pictograms, setPictograms] = useState([]);
   const [audioUrl, setAudioUrl] = useState(null);
+  const [playableAudioUrl, setPlayableAudioUrl] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [volume, setVolume] = useState(1);
   const [audioDevices, setAudioDevices] = useState([]);
@@ -38,10 +39,10 @@ const PhraseForm = ({ onSave, onCancel, phraseToEdit }) => {
   useEffect(() => {
     const fetchPictograms = async () => {
       try {
-        const response = await apiClient.get('/pictograms');
-        setPictograms(response.data);
-        if (response.data.length > 0 && !phraseToEdit) {
-          setImageUrl(response.data[0].imageUrl);
+        const fetchedPictograms = await localApiClient.pictograms.getAll();
+        setPictograms(fetchedPictograms);
+        if (fetchedPictograms.length > 0 && !phraseToEdit) {
+          setImageUrl(fetchedPictograms[0].imageUrl);
         }
       } catch (error) {
         console.error('Error fetching pictograms:', error);
@@ -51,16 +52,25 @@ const PhraseForm = ({ onSave, onCancel, phraseToEdit }) => {
   }, [phraseToEdit]);
 
   useEffect(() => {
+    const loadExistingAudio = async (filePath) => {
+      const playableUrl = await localApiClient.files.readAudio(filePath);
+      setPlayableAudioUrl(playableUrl);
+    };
+
     if (phraseToEdit) {
       setTitle(phraseToEdit.title);
       setPhrase(phraseToEdit.fullSentence);
       setImageUrl(phraseToEdit.imageUrl);
       setAudioUrl(phraseToEdit.audioUrl);
+      if (phraseToEdit.audioUrl) {
+        loadExistingAudio(phraseToEdit.audioUrl);
+      }
     } else {
       setTitle('');
       setPhrase('');
       setImageUrl(pictograms.length > 0 ? pictograms[0].imageUrl : '');
       setAudioUrl(null);
+      setPlayableAudioUrl(null);
     }
     setRecordedAudio(null);
   }, [phraseToEdit, pictograms]);
@@ -145,18 +155,27 @@ const PhraseForm = ({ onSave, onCancel, phraseToEdit }) => {
     setRecordedAudio(null);
   };
 
-  const handleUseAudio = () => {
-    setAudioUrl(recordedAudio);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title || !phrase || !imageUrl) {
       alert('Por favor, completa todos los campos.');
       return;
     }
-    console.log('Saving phrase with audioUrl:', audioUrl);
-    onSave({ title, phrase, imageUrl, audioUrl });
+
+    let finalAudioUrl = audioUrl;
+
+    if (recordedAudio) {
+      const filePath = await localApiClient.files.saveAudio(recordedAudio);
+      if (filePath) {
+        finalAudioUrl = filePath;
+      } else {
+        console.error('Error saving audio file');
+        alert('Hubo un error al guardar el audio. Por favor, inténtalo de nuevo.');
+        return;
+      }
+    }
+
+    onSave({ title, fullSentence: phrase, imageUrl, audioUrl: finalAudioUrl });
   };
 
   return (
@@ -213,11 +232,11 @@ const PhraseForm = ({ onSave, onCancel, phraseToEdit }) => {
           <button type="button" onClick={handleStopRecording} disabled={!isRecording}>Detener</button>
         </div>
         <canvas ref={canvasRef} className="visualizer" width="300" height="75"></canvas>
-        {audioUrl && (
+        {playableAudioUrl && !recordedAudio && (
           <div className="current-audio">
             <p>Audio actual:</p>
-            <audio src={audioUrl} controls controlsList="nodownload" />
-            <button type="button" onClick={() => setAudioUrl(null)}>Quitar audio</button>
+            <audio src={playableAudioUrl} controls controlsList="nodownload" />
+            <button type="button" onClick={() => { setAudioUrl(null); setPlayableAudioUrl(null); }}>Quitar audio</button>
           </div>
         )}
         {recordedAudio && (
@@ -227,10 +246,9 @@ const PhraseForm = ({ onSave, onCancel, phraseToEdit }) => {
             <p>Duración: {audioDuration.toFixed(2)}s</p>
             <button type="button" onClick={() => handlePlayAudio(recordedAudio)}>Reproducir</button>
             <button type="button" onClick={handleDeleteAudio}>Eliminar</button>
-            <button type="button" onClick={handleUseAudio}>Usar este audio</button>
           </div>
         )}
-        {!audioUrl && !recordedAudio && (
+        {!playableAudioUrl && !recordedAudio && (
           <p>No hay audio para esta frase.</p>
         )}
         <div className="volume-control">

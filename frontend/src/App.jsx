@@ -84,8 +84,8 @@ function App() {
   const fetchPictograms = async () => {
     setIsLoading(true);
     try {
-      const response = await apiClient.get('/pictograms');
-      setPictograms(response.data);
+      const data = await apiClient.pictograms.getAll();
+      setPictograms(data);
     } catch (error) {
       console.error('Error al obtener los pictogramas:', error);
     } finally {
@@ -94,23 +94,23 @@ function App() {
   };
 
   const handlePictogramSave = async (pictogramData) => {
-    const isUpdating = !!pictogramToEdit;
-    const endpoint = isUpdating ? `/pictograms/${pictogramToEdit.id}` : '/pictograms';
-    const method = isUpdating ? 'put' : 'post';
-
     try {
-      await apiClient[method](endpoint, pictogramData);
+      if (pictogramToEdit) {
+        await apiClient.pictograms.update(pictogramToEdit.id, pictogramData);
+      } else {
+        await apiClient.pictograms.create(pictogramData);
+      }
       fetchPictograms();
       setPictogramToEdit(null);
       setEditView('edit_pictograms'); // Go back to the grid after saving
     } catch (error) {
-      console.error(`Error al ${isUpdating ? 'actualizar' : 'añadir'} el pictograma:`, error);
+      console.error(`Error al guardar el pictograma:`, error);
     }
   };
 
   const handlePictogramDelete = async (id) => {
     try {
-      await apiClient.delete(`/pictograms/${id}`);
+      await apiClient.pictograms.delete(id);
       fetchPictograms();
     } catch (error) {
       console.error('Error al eliminar el pictograma:', error);
@@ -124,38 +124,19 @@ function App() {
 
   // Phrases
   const fetchPhrases = async () => {
-    try {
-      const response = await apiClient.get('/phrases');
-      setPhrases(response.data);
-    } catch (error) {
-      console.error('Error al obtener las frases:', error);
-    }
+    // TODO: Migrate to local API (window.electronAPI.getPhrases)
+    console.log('Fetch phrases not implemented yet for local API');
+    setPhrases([]);
   };
 
   const handlePhraseSave = async (phraseData) => {
-    const isUpdating = !!phraseToEdit;
-    const endpoint = isUpdating ? `/phrases/${phraseToEdit.id}` : '/phrases';
-    const method = isUpdating ? 'put' : 'post';
-
-    try {
-      await apiClient[method](endpoint, phraseData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      fetchPhrases();
-      setPhraseToEdit(null);
-      setEditView('edit_phrases'); // Go back to the grid
-    } catch (error) {
-      console.error(`Error al ${isUpdating ? 'actualizar' : 'añadir'} la frase:`, error);
-    }
+    // TODO: Migrate to local API (window.electronAPI.createPhrase / updatePhrase)
+    console.log('Save phrase not implemented yet for local API');
   };
 
   const handlePhraseDelete = async (id) => {
-    try {
-      await apiClient.delete(`/phrases/${id}`);
-      fetchPhrases();
-    } catch (error) {
-      console.error('Error al eliminar la frase:', error);
-    }
+    // TODO: Migrate to local API (window.electronAPI.deletePhrase)
+    console.log('Delete phrase not implemented yet for local API');
   };
 
   const handlePhraseEditSelect = (phrase) => {

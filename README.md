@@ -1,6 +1,6 @@
 # Comunicador Pictográfico
 
-Este proyecto es una aplicación de comunicación asistida por pictogramas, diseñada para ayudar a niños con autismo u otras dificultades de comunicación a expresar sus necesidades y deseos de forma sencilla e intuitiva. La aplicación es multiplataforma y funciona en la web, como aplicación de escritorio (Windows, macOS, Linux) y tiene una base para desarrollo móvil.
+Este proyecto es una aplicación de comunicación asistida por pictogramas, diseñada para ayudar a niños con autismo u otras dificultades de comunicación. **Actualmente, el proyecto está en transición a una arquitectura 100% local para ofrecer una experiencia de escritorio y móvil más rápida, privada y robusta.**
 
 ## ✨ Características Principales
 
@@ -13,122 +13,74 @@ Este proyecto es una aplicación de comunicación asistida por pictogramas, dise
   - **Agregar Contenido:** Un submenú para elegir si se quiere crear un pictograma para construir frases o una frase rápida con audio personalizado.
   - **Editar/Eliminar Pictogramas:** Muestra una cuadrícula con solo los pictogramas básicos para su gestión.
   - **Editar/Eliminar Frases Rápidas:** Muestra una cuadrícula con solo las frases rápidas para su gestión.
-- **Multiplataforma:**
-  - **Web:** Aplicación web progresiva (PWA) completamente funcional.
-  - **Escritorio:** Empaquetada con Electron para una experiencia nativa en sistemas operativos de escritorio.
-  - **Móvil:** Estructura de proyecto inicializada con React Native y Expo.
+- **Multiplataforma (En Transición):**
+  - **Escritorio:** El objetivo principal actual es una aplicación nativa para Windows, macOS y Linux usando Electron.
+  - **Móvil:** Existe una base de proyecto con React Native para el futuro desarrollo móvil.
 
 ## 🛠️ Stack Tecnológico
 
-- **Backend:** Node.js con Express y Sequelize (para el ORM con PostgreSQL).
-- **Frontend (Web y Escritorio):** React con Vite y @hello-pangea/dnd para Drag and Drop.
-- **Base de Datos:** PostgreSQL.
-- **Contenerización:** Docker y Docker Compose.
-- **Empaquetado de Escritorio:** Electron.
+- **Frontend:** React con Vite.
+- **Aplicación de Escritorio:** Electron.
+- **Base de Datos Local:** SQLite (a través de `better-sqlite3` y `knex`).
 
-## 🚀 Instalación y Ejecución
+## 🚀 Instalación y Ejecución (Aplicación de Escritorio)
 
-Sigue estos pasos para levantar el entorno de desarrollo completo.
+Sigue estos pasos para levantar el entorno de desarrollo local.
 
 ### Prerrequisitos
 
-- [Docker](https://www.docker.com/products/docker-desktop/) y Docker Compose.
 - [Node.js](https://nodejs.org/) (versión 18 o superior).
 - `npm` (generalmente se instala con Node.js).
 
 ### Pasos
 
-1.  **Clonar el Repositorio (si aplica)**
+1.  **Clonar el Repositorio**
     ```bash
     git clone <url-del-repositorio>
     cd <nombre-del-repositorio>
     ```
 
-2.  **Levantar los Servicios de Backend y Base de Datos**
-
-    Desde la raíz del proyecto, ejecuta el siguiente comando. Esto creará y levantará los contenedores para la API (backend) y la base de datos PostgreSQL.
-
-    ```bash
-    docker-compose up --build -d
-    ```
-
-3.  **Instalar Dependencias**
-
+2.  **Instalar Dependencias del Frontend**
     ```bash
     npm install --prefix frontend
     ```
 
-4.  **Ejecutar las Migraciones (Solo la primera vez)**
-
-    Este comando creará la estructura de la base de datos (tablas y columnas).
+3.  **Ejecutar en Modo Desarrollo**
+    Este comando abrirá la aplicación de escritorio en modo de desarrollo con las herramientas de depuración activadas.
     ```bash
-    docker-compose exec api npx sequelize-cli db:migrate
+    npm run dev:electron --prefix frontend
     ```
 
-5.  **Poblar la Base de Datos (Solo la primera vez)**
-
-    Ejecuta el siguiente comando para llenar la base de datos con los pictogramas iniciales.
+4.  **Empaquetar la Aplicación (Opcional)**
+    Para generar el instalador final para tu sistema operativo, ejecuta:
     ```bash
-    docker-compose exec api npx sequelize-cli db:seed:all
+    npm run dist:electron --prefix frontend
     ```
 
-6.  **Ejecutar el Frontend**
+## 📋 Hoja de Ruta: Transición a Aplicación Local
 
-    ```bash
-    npm run dev --prefix frontend
-    ```
+El foco actual del proyecto es transformar la aplicación web en una aplicación de escritorio completamente funcional y autónoma.
 
-7.  **¡Listo!**
+-   [ ] **Fase 1: Aplicación de Escritorio Local**
+    -   [x] **Integrar SQLite:** Configurar y preparar la base de datos local (`knex`, `better-sqlite3`, migraciones y seeds).
+    -   [x] **Migrar Lógica de Backend:**
+        - [x] CRUD de Pictogramas
+        - [x] CRUD de Frases
+    -   [x] **Crear Puente de Comunicación:**
+        - [x] Creado el puente de comunicación (`preload.js`).
+        - [x] Implementados todos los canales para Pictogramas y Frases.
+    -   [x] **Conectar Frontend:**
+        - [x] Conectado el CRUD de Pictogramas.
+        - [x] Conectar el CRUD de Frases.
+    -   [x] **Gestión de Archivos Locales:** Adaptar el sistema de grabación y reproducción de audio para que funcione con archivos guardados en el computador del usuario.
 
-    Abre tu navegador y visita [http://localhost:5173](http://localhost:5173) para ver la aplicación en funcionamiento.
+-   [ ] **Fase 2: Aplicación Móvil (Futuro)**
+    -   [ ] Retomar el desarrollo de la aplicación móvil con React Native, aplicando la misma arquitectura de base de datos local.
 
-### Scripts Útiles
-
--   `frontend/npm run dev`: Inicia el servidor de desarrollo web.
--   `frontend/npm run build`: Compila el proyecto de React para producción.
--   `frontend/npm run dist:electron`: Empaqueta la aplicación en un ejecutable de escritorio.
--   `docker-compose logs -f api`: Muestra los logs en tiempo real del contenedor del backend.
--   `docker-compose down`: Detiene y elimina los contenedores.
-
-## 📝 Nota sobre la Base de Datos
-
-El proyecto está configurado para usar migraciones y seeders de Sequelize para gestionar la base de datos. La sincronización automática (`sequelize.sync`) ha sido eliminada para garantizar un control explícito y seguro sobre el esquema de la base de datos, especialmente en producción.
-
-## 📋 Historial de Mejoras y Funcionalidades Futuras
+## ✅ Historial de Mejoras (Funcionalidad Base)
 
 -   [x] **Rediseño UI/UX:** Se ha aplicado un rediseño visual completo para una apariencia más profesional, limpia y accesible.
 -   [x] **Modo Oscuro:** Añadir un tema oscuro para reducir la fatiga visual.
 -   [x] **Arrastrar y Soltar (Drag and Drop):** En la web, permitir que se reordenen los pictogramas en la frase arrastrándolos.
 -   [x] **Gestión de Frases con Audio:** Se ha implementado un sistema completo (CRUD) para crear, editar y eliminar frases personalizadas.
--   [x] **Grabación de Voz:** Se ha añadido la capacidad de grabar una voz personalizada para las frases, permitiendo una comunicación más personal y familiar. También se puede ajustar el volumen de reproducción.
--   [ ] **Categorías:** Permitir agrupar los pictogramas por categorías ("Comida", "Animales", "Acciones").
--   [ ] **Búsqueda por Categorías:** Además de la búsqueda por texto, permitir filtrar los pictogramas por las categorías creadas.
--   [ ] **Historial de Frases:** Implementar un historial de frases creadas para un acceso rápido y repetido.
--   [ ] **Personalización de la Voz:** Permitir ajustar la velocidad y el tono de la voz de la síntesis de voz.
--   [ ] **Exportar/Importar Contenido:** Permitir exportar e importar los pictogramas y frases.
--   [ ] **Perfiles de Usuario:** Permitir crear múltiples perfiles de usuario.
--   [ ] **Estadísticas de Uso:** Mostrar estadísticas sobre los pictogramas y frases más utilizados.
--   [ ] **Sonidos de Interacción:** Añadir sonidos sutiles y opcionales al tocar botones o pictogramas.
--   [ ] **Desarrollo Móvil:** Continuar el desarrollo de la aplicación móvil con React Native.
-
----
-
-## 🚀 Plan de Despliegue a Producción
-
-Esta es la lista de tareas para desplegar la aplicación y hacerla accesible desde internet, logrando un ejecutable final verdaderamente portátil.
-
-### Backend (Despliegue en Render)
-- [x] **1.1.** Preparar la configuración de la base de datos para Render (`config.js`).
-- [x] **1.2.** Crear una nueva base de datos PostgreSQL en Render.
-- [x] **1.3.** Crear un nuevo "Web Service" en Render para el backend.
-- [x] **1.4.** Configurar las variables de entorno en Render.
-- [x] **1.5.** Desplegar el código del `backend` a Render.
-
-### Frontend (Despliegue en Vercel)
-- [x] **2.1.** Actualizar el código del frontend para que se conecte a la URL pública de la API de Render.
-- [x] **2.2.** Desplegar el `frontend` en Vercel.
-
-La aplicación está disponible en: [https://samuelexpicto.vercel.app](https://samuelexpicto.vercel.app)
-
-### Aplicación de Escritorio (Versión Final)
-- [ ] **3.1.** Generar el ejecutable final de Electron que se conecta a la API en la nube.
+-   [x] **Grabación de Voz:** Se ha añadido la capacidad de grabar una voz personalizada para las frases, permitiendo una comunicación más personal y familiar.

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import apiClient from '../api';
+import localApiClient from '../api'; // Changed apiClient to localApiClient
 import './PhraseGrid.css';
-import PhraseForm from './PhraseForm'; // Importar el nuevo formulario
+import PhraseForm from './PhraseForm';
 
 const PhraseGrid = ({ editMode }) => {
   const [phrases, setPhrases] = useState([]);
@@ -16,8 +16,9 @@ const PhraseGrid = ({ editMode }) => {
   const fetchPhrases = async () => {
     setIsLoading(true);
     try {
-      const response = await apiClient.get(`/phrases?_=${new Date().getTime()}`);
-      setPhrases(response.data);
+      // Changed to use localApiClient
+      const fetchedPhrases = await localApiClient.phrases.getAll();
+      setPhrases(fetchedPhrases);
     } catch (error) {
       console.error('Error al obtener las frases:', error);
     } finally {
@@ -26,25 +27,19 @@ const PhraseGrid = ({ editMode }) => {
   };
 
   const handleSave = async (phraseData) => {
-    if (phraseToEdit) {
-      // Lógica de actualización
-      try {
-        await apiClient.put(`/phrases/${phraseToEdit.id}`, phraseData);
-        setShowForm(false);
-        setPhraseToEdit(null);
-        fetchPhrases();
-      } catch (error) {
-        console.error('Error al actualizar la frase:', error);
+    try {
+      if (phraseToEdit) {
+        // Changed to use localApiClient
+        await localApiClient.phrases.update(phraseToEdit.id, phraseData);
+      } else {
+        // Changed to use localApiClient
+        await localApiClient.phrases.create(phraseData);
       }
-    } else {
-      // Lógica de creación
-      try {
-        await apiClient.post('/phrases', phraseData);
-        setShowForm(false);
-        fetchPhrases();
-      } catch (error) {
-        console.error('Error al guardar la frase:', error);
-      }
+      setShowForm(false);
+      setPhraseToEdit(null);
+      fetchPhrases();
+    } catch (error) {
+      console.error('Error al guardar la frase:', error);
     }
   };
 
@@ -56,7 +51,8 @@ const PhraseGrid = ({ editMode }) => {
   const handleDeletePhrase = async (id) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar esta frase?')) {
       try {
-        await apiClient.delete(`/phrases/${id}`);
+        // Changed to use localApiClient
+        await localApiClient.phrases.delete(id);
         fetchPhrases(); // Recargar las frases
       } catch (error) {
         console.error('Error al eliminar la frase:', error);
@@ -64,12 +60,21 @@ const PhraseGrid = ({ editMode }) => {
     }
   };
 
-  const speakPhrase = (phrase) => {
+  const speakPhrase = async (phrase) => {
     if (editMode) return; // No hablar en modo edición
 
     if (phrase.audioUrl) {
-      const audio = new Audio(phrase.audioUrl);
-      audio.play();
+      try {
+        const playableUrl = await localApiClient.files.readAudio(phrase.audioUrl);
+        if (playableUrl) {
+          const audio = new Audio(playableUrl);
+          audio.play();
+        } else {
+          console.error('Could not read audio file');
+        }
+      } catch (error) {
+        console.error('Error playing audio:', error);
+      }
     } else if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(phrase.fullSentence);
       utterance.lang = 'es-ES';
