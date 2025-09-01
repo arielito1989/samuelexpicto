@@ -88,28 +88,76 @@ Esta sección documenta la serie de errores y soluciones aplicadas para alcanzar
 
 ## 📋 Próximos Pasos y Mejoras
 
-### Nueva Funcionalidad: Carga de Imágenes Locales
+A continuación se detallan las próximas funcionalidades y mejoras estratégicas para hacer la aplicación más robusta, escalable y fácil de usar.
 
-La próxima gran mejora será permitir a los usuarios usar sus propias imágenes para los pictogramas, en lugar de depender de URLs de internet.
+### 1. Nueva Funcionalidad: Carga de Imágenes Locales
 
-**Objetivo:**
+La mejora más importante es permitir a los usuarios utilizar sus propias imágenes para los pictogramas.
 
-Al crear o editar un pictograma, el usuario tendrá la opción de subir un archivo de imagen (`.png`, `.jpg`) desde su dispositivo. En el futuro, en plataformas móviles, esto podría extenderse a tomar una foto directamente desde la cámara.
+**Objetivo:** Al crear o editar un pictograma desde `PictogramForm.jsx`, el usuario podrá subir un archivo de imagen (`.png`, `.jpg`) desde su dispositivo.
 
 **Sugerencias de Implementación:**
 
-1.  **Modificar el Formulario (`PhraseForm.jsx`):**
-    *   Añadir un botón "Subir Archivo" que abrirá un diálogo para seleccionar archivos.
-    *   El campo de texto actual para la URL de la imagen puede eliminarse o mantenerse como una opción alternativa.
+Existen dos enfoques para manejar los archivos:
 
-2.  **Manejar la Carga de Archivos en React:**
-    *   Utilizar un elemento `<input type="file" accept="image/*" />` para la selección de archivos.
-    *   Una vez que el usuario selecciona un archivo, usar la API `FileReader` del navegador para leer el archivo local.
-    *   Convertir la imagen leída a una cadena de texto en formato `base64`.
+*   **Opción A (A corto plazo): Convertir a Base64**
+    1.  **Frontend (`PictogramForm.jsx`):** Usar `<input type="file">` y la API `FileReader` para convertir la imagen seleccionada en un string `base64`.
+    2.  **Backend (`electron.js`):** Enviar este string a través de IPC y guardarlo directamente en la columna `imageUrl` de la base de datos.
+    *   **Ventaja:** Implementación rápida que no requiere cambios en la lógica del backend para manejar archivos.
+    *   **Desventaja:** Aumenta significativamente el tamaño de la base de datos, lo que puede causar problemas de rendimiento a largo plazo.
 
-3.  **Guardado en la Base de Datos:**
-    *   El string `base64` generado se guardará en la columna `imageUrl` de la base de datos, de la misma forma que se haría con una URL. **No se requieren cambios en el backend (`electron.js`) para esta primera implementación**, ya que la base de datos simplemente almacenará el texto.
+*   **Opción B (Recomendada, a largo plazo): Almacenar Archivos Físicamente**
+    1.  **Frontend (`PictogramForm.jsx`):** Al seleccionar un archivo, enviar la ruta del archivo (ej: `C:\Users\Juan\Pictures\gato.png`) al proceso principal a través de un nuevo canal IPC.
+    2.  **Backend (`electron.js`):**
+        *   Recibir la ruta temporal del archivo.
+        *   Copiar el archivo a una carpeta segura y persistente dentro de los datos de la aplicación (usando `app.getPath('userData')`).
+        *   Guardar la **nueva ruta local y permanente** de la imagen en la base de datos (ej: `C:\Users\Juan\AppData\Roaming\comunicador-pictografico\images\gato_16938488.png`).
+    *   **Ventaja:** Mantiene la base de datos ligera y rápida. Es una solución mucho más escalable y robusta.
 
-4.  **Mejora de Rendimiento (Futuro):**
-    *   **Problema:** Almacenar imágenes como `base64` directamente en la base de datos puede hacerla muy pesada con el tiempo.
-    *   **Solución a futuro:** Se podría implementar una lógica más avanzada donde, al subir una imagen, se copie el archivo a una carpeta segura dentro de los datos de la aplicación (`app.getPath('userData')`) y en la base de datos solo se guarde la ruta a ese archivo local. Esto requeriría nuevas funciones en `electron.js` para manejar la escritura y lectura de archivos de forma segura.
+### 2. Pruebas Automatizadas para Evitar Regresiones
+
+El historial de depuración muestra que se han introducido regresiones. Para garantizar la estabilidad a futuro, es crucial añadir pruebas automatizadas.
+
+*   **Herramienta Sugerida:** [**Vitest**](https://vitest.dev/), por su perfecta integración con Vite.
+*   **Objetivos de Prueba:**
+    *   **Componentes de React:** Asegurar que renderizan correctamente.
+    *   **Lógica de Base de Datos:** Probar las funciones CRUD en `electron.js` de forma aislada.
+    *   **Comunicación IPC:** Simular eventos para verificar que los manejadores responden como se espera.
+
+### 3. Gestión de Estado Centralizada
+
+Para evitar la complejidad de pasar `props` por múltiples niveles de componentes (`prop drilling`), se recomienda centralizar el estado de la aplicación.
+
+*   **Herramienta Sugerida:** [**Zustand**](https://zustand-demo.pmnd.rs/), una librería de gestión de estado minimalista y potente.
+*   **Beneficios:** Simplifica la lógica, facilita la depuración y hace que el código sea más mantenible a medida que se añaden nuevas características.
+
+### 4. Categorización y Búsqueda de Contenido
+
+A medida que la biblioteca de pictogramas y frases crezca, encontrarlos será un desafío.
+
+*   **Mejoras Sugeridas:**
+    *   **Categorías:** Añadir una tabla `categories` a la base de datos y permitir al usuario agrupar su contenido.
+    *   **Búsqueda:** Implementar un campo de búsqueda en la interfaz para filtrar pictogramas y frases por su nombre.
+
+### 5. Funcionalidad de Exportación e Importación
+
+Para dar seguridad a los usuarios, sería muy valioso permitirles crear copias de seguridad de su contenido.
+
+*   **Implementación:** Crear funciones para exportar todos los pictogramas, frases y audios personalizados a un único archivo comprimido (`.zip`) que pueda ser importado de nuevo en la misma o en otra instalación de la aplicación.
+
+## 🧹 Refactorización Arquitectónica: Transición a 100% Local
+
+Esta sección documenta los pasos tomados para convertir el proyecto de una arquitectura cliente-servidor (conectada a servicios como Render/Vercel) a una aplicación de escritorio y móvil completamente autónoma y local.
+
+### ☑ Paso 1: Eliminación del Backend Heredado y Archivos Obsoletos
+
+*   **Objetivo:** Eliminar toda la infraestructura del antiguo backend que se conectaba a una base de datos en Render. La nueva arquitectura consiste en una aplicación local que maneja sus propios datos y una página web estática (desplegada en Vercel) que solo sirve para promocionar y ofrecer la descarga de la aplicación.
+*   **Acción:** Se eliminarán los siguientes archivos y directorios por las razones que se detallan:
+    *   `backend/`: Contenía todo el código del servidor (Node.js, Express, Sequelize), modelos y configuraciones de la base de datos remota.
+    *   `docker-compose.yml`: Se utilizaba para orquestar la base de datos PostgreSQL para el desarrollo local del antiguo backend.
+    *   `postgres_data/` y `database/`: Almacenaban datos y configuraciones relacionadas con la base de datos obsoleta.
+*   **Comando a ejecutar:**
+    ```bash
+    rd /s /q backend database postgres_data && del docker-compose.yml
+    ```
+*   **Resultado:** El proyecto quedará limpio de código innecesario y se eliminará cualquier posible credencial sensible que estuviera en los archivos de configuración del backend.
