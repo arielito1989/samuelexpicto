@@ -1,0 +1,167 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
+
+/* CSS Variables for colors and fonts */
+:root {
+  --primary-font: 'Nunito', sans-serif;
+  --text-color: #343a40;
+  --background-color: #ffffff;
+  --primary-color: #007bff;
+  --primary-hover-color: #0056b3;
+  --white-color: #ffffff;
+  --section-padding: 100px 20px;
+  --border-radius: 12px;
+}
+
+/* General Styles */
+body {
+  font-family: var(--primary-font);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  margin: 0;
+  line-height: 1.8;
+  font-size: 18px; /* Increased base font size */
+}
+
+.landing-page {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-weight: 800; /* Bolder font weight */
+  line-height: 1.4;
+}
+
+h1 { font-size: 3.5rem; }
+h2 { font-size: 2.8rem; }
+
+/* Hero Section Styles */
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 95vh;
+  color: var(--white-color);
+  /* A more reliable, high-quality image URL */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.pexels.com/photos/7147995/pexels-photo-7147995.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+  background-size: cover;
+  background-position: center;
+  padding: var(--section-padding);
+}
+
+.hero-section h1 {
+  font-size: clamp(3rem, 6vw, 4.5rem); /* Larger responsive font size */
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.hero-section p {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  max-width: 700px;
+  margin-bottom: 3rem;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+}
+
+.cta-button {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: none;
+  padding: 20px 40px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  box-shadow: 0 5px 20px rgba(0, 123, 255, 0.4);
+}
+
+.cta-button:hover {
+  background-color: var(--primary-hover-color);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.5);
+}
+
+/* Feature Section Styles */
+.feature-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px; /* Increased gap */
+  padding: var(--section-padding);
+  max-width: 1100px;
+  margin: 0 auto;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.feature-section:nth-of-type(odd) {
+  background-color: #f8f9fa; /* Alternating background color */
+}
+
+/* Alternating layout */
+.feature-section.alt {
+  flex-direction: row-reverse;
+}
+
+.feature-content, .feature-visual {
+  flex: 1;
+  min-width: 320px; /* For wrapping */
+  text-align: left;
+}
+
+.feature-content h2 {
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+.feature-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.feature-svg {
+  max-width: 250px;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+.personalization-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.feature-svg-small {
+  max-width: 100px;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+/* Final CTA Section */
+.final-cta-section {
+  background-color: var(--text-color);
+  color: var(--white-color);
+  text-align: center;
+  padding: var(--section-padding);
+}
+
+.final-cta-section h2 {
+  margin-bottom: 2rem;
+}
+
+/* Footer Styles */
+.footer {
+  text-align: center;
+  padding: 30px 20px;
+  background-color: #e9ecef;
+  font-size: 1rem;
+  color: #6c757d;
+}
