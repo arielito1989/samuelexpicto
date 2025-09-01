@@ -10,7 +10,7 @@ const LandingPage = () => {
       <section className="hero-section fade-in-section">
         <h1>Comunica Sin Barreras</h1>
         <p>La herramienta de comunicación que da voz a las ideas a través de imágenes. Simple, personal y poderosa.</p>
-        <a href="https://github.com/arielito1989/samuelexpicto/releases/download/V0.1.0/Comunicador.Pictografico.Setup.0.0.0.exe" className="cta-button">Descargar Aplicación</a>
+        <a href="https://github.com/arielito1989/samuelexpicto/releases/download/V0.1.0/Comunicador.Pictografico.Setup.0.0.0.exe" className="cta-button">Descargar para Windows</a>
       </section>
 
       <section className="feature-section fade-in-section">
@@ -62,7 +62,7 @@ const LandingPage = () => {
 
       <section className="final-cta-section">
         <h2>Descubre una nueva forma de comunicar.</h2>
-        <a href="https://github.com/arielito1989/samuelexpicto/releases/download/V0.1.0/Comunicador.Pictografico.Setup.0.0.0.exe" className="cta-button">Descargar Aplicación</a>
+        <a href="https://github.com/arielito1989/samuelexpicto/releases/download/V0.1.0/Comunicador.Pictografico.Setup.0.0.0.exe" className="cta-button">Descargar para Windows</a>
       </section>
 
       <footer className="footer">

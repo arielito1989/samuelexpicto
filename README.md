@@ -48,9 +48,17 @@ Se implementó un renderizado condicional en `main.jsx`: si el entorno es Electr
     *   **Contenido:** Mensaje final de ánimo.
     *   **Acción:** Un último y prominente botón de "Descargar Aplicación".
 
-### Siguientes Pasos Sugeridos
+## 📱 Próximo Gran Objetivo: Desarrollo de la Aplicación Móvil
 
-*   **☐ Mejorar Calidad Visual:** Reemplazar los gráficos SVG básicos por ilustraciones de alta calidad o una librería de iconos profesional para un aspecto más pulido y amigable.
+Con la aplicación de escritorio y la página de aterrizaje finalizadas, el siguiente gran paso es dar vida a la versión móvil.
+
+El objetivo es utilizar la base del proyecto existente en la carpeta `/mobile` (creada con React Native y Expo) para desarrollar una aplicación funcional para Android y iOS, reutilizando la lógica y los componentes que sean posibles.
+
+### Fases Iniciales del Desarrollo Móvil
+
+1.  **☐ Análisis del Entorno:** Inspeccionar el directorio `/mobile`, revisar su `package.json` y entender la estructura y dependencias actuales.
+2.  **☐ Instalación y Ejecución:** Instalar las dependencias del proyecto móvil y ponerlo en marcha en un entorno de desarrollo (Expo Go) para verificar su estado inicial.
+3.  **☐ Conexión con la Lógica Local:** Adaptar la lógica de la base de datos (que ahora es local en el escritorio) a un formato compatible con el almacenamiento del dispositivo móvil (ej. SQLite para móviles).
 
 ## 🚀 Instalación y Ejecución (Entorno de Desarrollo)
 
