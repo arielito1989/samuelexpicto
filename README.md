@@ -56,9 +56,40 @@ El objetivo es utilizar la base del proyecto existente en la carpeta `/mobile` (
 
 ### Fases Iniciales del Desarrollo Móvil
 
-1.  **☐ Análisis del Entorno:** Inspeccionar el directorio `/mobile`, revisar su `package.json` y entender la estructura y dependencias actuales.
-2.  **☐ Instalación y Ejecución:** Instalar las dependencias del proyecto móvil y ponerlo en marcha en un entorno de desarrollo (Expo Go) para verificar su estado inicial.
-3.  **☐ Conexión con la Lógica Local:** Adaptar la lógica de la base de datos (que ahora es local en el escritorio) a un formato compatible con el almacenamiento del dispositivo móvil (ej. SQLite para móviles).
+1.  **☑ Análisis del Entorno:** Inspeccionar el directorio `/mobile`, revisar su `package.json` y entender la estructura y dependencias actuales.
+2.  **☑ Instalación y Ejecución:** Instalar las dependencias del proyecto móvil y ponerlo en marcha en un entorno de desarrollo (Expo Go) para verificar su estado inicial.
+3.  **☑ Conexión con la Lógica Local:** Adaptar la lógica de la base de datos (que ahora es local en el escritorio) a un formato compatible con el almacenamiento del dispositivo móvil (ej. SQLite para móviles).
+
+### Próximos Pasos: Finalizar la Aplicación Móvil
+
+Esta es la hoja de ruta para completar las características principales de la aplicación móvil.
+
+**Fase 1: Constructor de Frases (Funcionalidad Básica)**
+*   `☐` Crear el componente `SentenceDisplay.tsx` para visualizar la frase.
+*   `☐` Añadir `SentenceDisplay` a la pantalla principal (`index.tsx`).
+*   `☐` Implementar la lógica de estado en `index.tsx` para manejar la lista de pictogramas en la frase.
+*   `☐` Hacer que los pictogramas en `PictogramGrid.tsx` sean táctiles.
+*   `☐` Al tocar un pictograma, añadirlo al estado de la frase.
+*   `☐` Mostrar los pictogramas de la frase en el componente `SentenceDisplay`.
+*   `☐` Implementar la funcionalidad para eliminar un pictograma de la frase.
+
+**Fase 2: Síntesis de Voz (TTS)**
+*   `☐` Instalar la librería `expo-speech`.
+*   `☐` Añadir un botón "Reproducir" junto al `SentenceDisplay`.
+*   `☐` Al presionar el botón, construir la oración completa a partir de los pictogramas.
+*   `☐` Usar `Speech.speak()` para leer la oración en voz alta.
+
+**Fase 3: Gestión de Contenido (Modo Edición)**
+*   `☐` Crear una nueva pestaña o pantalla para el "Modo Edición".
+*   `☐` Diseñar la interfaz para ver, añadir, editar y eliminar pictogramas.
+*   `☐` Implementar la funcionalidad para **Añadir** un pictograma (usando `expo-image-picker` para acceder a la galería).
+*   `☐` Implementar la funcionalidad para **Editar** un pictograma.
+*   `☐` Implementar la funcionalidad para **Eliminar** un pictograma.
+
+**Fase 4: Compilación y Distribución (Build)**
+*   `☐` Configurar los servicios de Expo (EAS Build).
+*   `☐` Ejecutar el proceso de `build` para generar el archivo instalable (`.apk` o `.ipa`).
+*   `☐` Probar el archivo final en un dispositivo físico.
 
 ## 🚀 Instalación y Ejecución (Entorno de Desarrollo)
 

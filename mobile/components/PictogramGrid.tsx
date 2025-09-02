@@ -1,78 +1,76 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator } from 'react-native';
-import axios from 'axios';
-
-// La URL del backend. NOTA: Si usas un emulador de Android, reemplaza 'localhost' por '10.0.2.2'.
-// Si usas un dispositivo físico, usa la dirección IP de tu computadora en la red local.
-const API_URL = 'http://localhost:3000/api/pictograms';
+import { View, Text, FlatList, Image, StyleSheet, useColorScheme, ActivityIndicator } from 'react-native';
+import { useSQLiteContext } from 'expo-sqlite';
+import { Colors } from '@/constants/Colors';
+import { Pictogram } from '@/db/database';
 
 const PictogramGrid = () => {
-  const [pictograms, setPictograms] = useState([]);
+  const colorScheme = useColorScheme() ?? 'light';
+  const styles = getStyles(colorScheme);
+  const db = useSQLiteContext();
+  const [pictograms, setPictograms] = useState<Pictogram[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchPictograms = async () => {
+    async function loadPictograms() {
       try {
-        const response = await axios.get(API_URL);
-        setPictograms(response.data);
-      } catch (err) {
-        setError(err.message);
+        setLoading(true);
+        const result = await db.getAllAsync<Pictogram>('SELECT * FROM pictograms');
+        setPictograms(result);
+      } catch (error) {
+        console.error("Failed to load pictograms from DB", error);
       } finally {
         setLoading(false);
       }
-    };
+    }
+    loadPictograms();
+  }, [db]);
 
-    fetchPictograms();
-  }, []);
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
-
-  if (error) {
-    return <Text>Error: {error}</Text>;
-  }
-
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: Pictogram }) => (
     <View style={styles.itemContainer}>
       <Image source={{ uri: item.imageUrl }} style={styles.image} />
       <Text style={styles.text}>{item.name}</Text>
     </View>
   );
 
+  if (loading) {
+    return <ActivityIndicator size="large" color={Colors[colorScheme].tint} style={{ flex: 1 }}/>;
+  }
+
   return (
     <FlatList
       data={pictograms}
       renderItem={renderItem}
       keyExtractor={(item) => item.id.toString()}
-      numColumns={3} // Ajusta el número de columnas según necesites
+      numColumns={3}
       contentContainerStyle={styles.list}
     />
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (colorScheme: 'light' | 'dark') => StyleSheet.create({
   list: {
-    justifyContent: 'center',
     alignItems: 'center',
   },
   itemContainer: {
     margin: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 100, // Ancho fijo para cada item
+    width: 100,
+    backgroundColor: Colors[colorScheme].surface,
+    borderRadius: 15,
+    padding: 10,
   },
   image: {
     width: 80,
     height: 80,
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
   },
   text: {
-    marginTop: 5,
+    marginTop: 8,
     textAlign: 'center',
+    color: Colors[colorScheme].text,
+    fontWeight: '500',
   },
 });
 
